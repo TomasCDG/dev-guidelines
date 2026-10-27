@@ -68,7 +68,7 @@ Si dudas: un repo → A; front y back en carpetas separadas → B.
 La skill [`skills/dev-setup/`](../skills/dev-setup/SKILL.md) sigue el formato Agent Skills y lleva el instalador dentro (`scripts/install.py` y `assets/`). Es la vía más cómoda: el agente decide los parámetros, configura lo que el script no puede saber y verifica.
 
 1. **Instala la skill** en tu proyecto o en tu usuario:
-   - `npx skills add <repo>` (instala las tres skills: `dev-setup`, `dev-update` y `dev-feedback`), o
+   - `npx skills add TomasCDG/dev-guidelines` (instala las tres skills: `dev-setup`, `dev-update` y `dev-feedback`), o
    - copia las carpetas de `skills/` (`dev-setup` es imprescindible; las otras dos son opcionales pero recomendadas) a `.claude/skills/` (proyecto) o a `~/.claude/skills/` (personal).
 2. **Pídelo** en una sesión nueva del agente, en la carpeta del proyecto: «instala dev-guidelines en este proyecto».
 3. **El agente detecta el modo.** Un repo git sin otros repos dentro → A; dos o más repos en la carpeta → B; un `dev/` con `.package-version` → actualización.
@@ -80,17 +80,26 @@ La skill [`skills/dev-setup/`](../skills/dev-setup/SKILL.md) sigue el formato Ag
 
 ## 5. Vía install.py
 
-Desde la carpeta del paquete `dev-guidelines`, modo A:
+Primero descarga el paquete fuera de tu proyecto:
 
 ```bash
-python -I scripts/install.py --mode A --target /ruta/a/mi-repo
+git clone https://github.com/TomasCDG/dev-guidelines.git
+```
+
+Después, modo A, ejecutando desde la carpeta de tu proyecto (`--target` vale por defecto la carpeta actual):
+
+```bash
+cd ruta/a/mi-repo
+python ../dev-guidelines/scripts/install.py --mode A
 ```
 
 Con adaptadores de Claude Code y Cursor, y sin preguntas:
 
 ```bash
-python -I scripts/install.py --mode A --target /ruta/a/mi-repo --adapters claude,cursor --yes
+python ../dev-guidelines/scripts/install.py --mode A --adapters claude,cursor --yes
 ```
+
+También puedes ejecutarlo desde la carpeta del paquete y dar el destino con `--target /ruta/a/mi-repo`. `-I` (modo aislado de Python) es opcional; se usa en los ejemplos de más abajo.
 
 Resultado esperado en `mi-repo/`:
 

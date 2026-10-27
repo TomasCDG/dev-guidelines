@@ -16,7 +16,7 @@ Esta skill no lleva scripts propios. Usa los de la carpeta hermana `../dev-setup
 - `<dev-setup>/assets/MIGRATIONS.md` (qué cambia entre versiones)
 - `<dev-setup>/assets/VERSION`
 
-Si esa carpeta no existe, párate: la skill `dev-setup` no está instalada o está incompleta. Dile al desarrollador que la instale o la actualice (`npx skills add <repo>` o `npx skills update`, o que copie `skills/dev-setup` junto a esta skill) y que te vuelva a llamar. Si `python` no funciona, prueba `python3` o `py`.
+Si esa carpeta no existe, párate: la skill `dev-setup` no está instalada o está incompleta. Dile al desarrollador que la instale o la actualice (`npx skills add TomasCDG/dev-guidelines` o `npx skills update`, o que copie `skills/dev-setup` junto a esta skill) y que te vuelva a llamar. Si `python` no funciona, prueba `python3` o `py`.
 
 ## 1. Ver si hace falta
 

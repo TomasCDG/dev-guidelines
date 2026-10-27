@@ -6,15 +6,25 @@
 
 Elige un modo. **A:** `dev/` dentro de tu repo. **B:** `dev/` junto a varios repos (front y back, por ejemplo). Requisitos: Python 3.10+ y git.
 
-**Vía skill (recomendada).** Instala la skill `dev-setup` (`npx skills add <repo>`, que instala `dev-setup`, `dev-update` y `dev-feedback`) y dile al agente:
+**Vía agente (recomendada).** Desde la carpeta de tu proyecto instala las skills (`dev-setup`, `dev-update` y `dev-feedback`):
+
+```bash
+npx skills add TomasCDG/dev-guidelines
+```
+
+Abre una sesión nueva del agente en esa carpeta y dile:
 
 > instala dev-guidelines en este proyecto
 
-**Vía comando** (modo A; para el modo B usa `--mode B --git-init` y apunta `--target` a la carpeta que contiene los repos):
+**Vía comando.** Clona el paquete fuera de tu proyecto, entra en tu proyecto y ejecuta el instalador desde ahí:
 
 ```bash
-python -I /ruta/a/dev-guidelines/scripts/install.py --mode A --target /ruta/a/mi-repo --adapters claude
+git clone https://github.com/TomasCDG/dev-guidelines.git
+cd ruta/a/mi-repo
+python ../dev-guidelines/scripts/install.py --mode A --adapters claude
 ```
+
+Ajusta la ruta de `install.py` a donde clonaste. Es el modo A; para el modo B, ejecútalo desde la carpeta que contiene los repos con `--mode B --git-init`. Si `python` no existe, prueba `python3` o `py`.
 
 Resultado: carpeta `dev/` y un `AGENTS.md` en la raíz que apunta a ella. Lo generado queda fuera de git. Detalle de pasos, opciones, modos y adaptadores: [01-instalacion.md](./01-instalacion.md). Para actualizar más adelante, dile al agente «actualiza dev-guidelines» ([01-instalacion.md §10](./01-instalacion.md#10-actualizar-a-una-versión-nueva)).
 
