@@ -1,0 +1,5 @@
+# Modo B: dev/ es su propio repo git junto a los repos del proyecto.
+# El instalador lo escribe como dev/.gitignore: el perfil personal, las copias de seguridad y el feedback no se versionan.
+DEV-PROFILE.md
+.backup/
+.feedback/

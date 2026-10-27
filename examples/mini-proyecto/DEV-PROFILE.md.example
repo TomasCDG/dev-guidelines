@@ -1,0 +1,13 @@
+# DEV-PROFILE — perfil personal (no se versiona)
+
+<!-- EJEMPLO RELLENADO. En un proyecto real este archivo se llama DEV-PROFILE.md y NO se versiona; aquí tiene extensión .example. Renómbralo a DEV-PROFILE.md para montar el ejemplo. -->
+
+Todo es opcional. El agente no avisa por campos vacíos: si necesita un dato que falta, lo pregunta entonces, propone un valor y lo anota aquí.
+
+| Campo | Valor | Si falta |
+|---|---|---|
+| Tecnologías que NO conozco (se explican en lenguaje sencillo; si hay alguna, los reports llevan glosario) | React, TypeScript, Vite | Todas las del proyecto |
+| Idioma de las explicaciones en el chat | Español | El de documentación de `PROJECT.md` |
+| Formato de la respuesta final | Máx. 10 líneas: qué hice, qué verifiqué, qué decides tú | Breve: qué se hizo, qué se verificó, qué queda |
+| Atribución de IA en commits y PR | ninguna | `ninguna` |
+| Particularidades del entorno | Windows 11 con PowerShell; observador de archivos de Vite lento en discos de red: usar polling | Ninguna |

@@ -1,0 +1,6 @@
+# Modo A: dev/ dentro del repo y sin versionar.
+# El instalador añade estas líneas a .git/info/exclude (exclusión local, no se comparte).
+dev/
+dev/DEV-PROFILE.md
+dev/.backup/
+dev/.feedback/
