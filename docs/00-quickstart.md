@@ -24,7 +24,7 @@ cd ruta/a/mi-repo
 python ../dev-guidelines/scripts/install.py --mode A --adapters claude
 ```
 
-Ajusta la ruta de `install.py` a donde clonaste. Es el modo A; para el modo B, ejecútalo desde la carpeta que contiene los repos con `--mode B --git-init`. Si `python` no existe, prueba `python3` o `py`.
+Ajusta la ruta de `install.py` a donde clonaste. Es el modo A; para el modo B, ejecútalo desde la carpeta que contiene los repos con `--mode B`. `dev/` es una copia de `dev-template/` del paquete y no se inicializa como repo salvo que añadas `--git-init` (opcional). Si `python` no existe, prueba `python3` o `py`.
 
 Resultado: carpeta `dev/` y un `AGENTS.md` en la raíz que apunta a ella. Lo generado queda fuera de git. Detalle de pasos, opciones, modos y adaptadores: [01-instalacion.md](./01-instalacion.md). Para actualizar más adelante, dile al agente «actualiza dev-guidelines» ([01-instalacion.md §10](./01-instalacion.md#10-actualizar-a-una-versión-nueva)).
 

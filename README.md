@@ -34,7 +34,7 @@ python ../dev-guidelines/scripts/install.py --mode A --adapters claude
 ```
 
 - **Modo A** (un solo repo): lo de arriba. `dev/` queda dentro de `mi-repo/`.
-- **Modo B** (varios repos, p. ej. `front/` y `back/`): entra en la carpeta que los contiene y usa `--mode B --git-init`.
+- **Modo B** (varios repos, p. ej. `front/` y `back/`): entra en la carpeta que los contiene y usa `--mode B`. `dev/` es una copia de `dev-template/` y queda sin git; `--git-init` es opcional, solo si quieres historial de tus tasks y docs.
 - Si `python` no existe, prueba `python3` o `py`. En Windows, `..\dev-guidelines\scripts\install.py`.
 - Sin `--mode` el instalador te lo pregunta. Para ver qué haría sin escribir nada, añade `--dry-run`.
 

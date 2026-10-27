@@ -72,7 +72,7 @@ La skill [`skills/dev-setup/`](../skills/dev-setup/SKILL.md) sigue el formato Ag
    - copia las carpetas de `skills/` (`dev-setup` es imprescindible; las otras dos son opcionales pero recomendadas) a `.claude/skills/` (proyecto) o a `~/.claude/skills/` (personal).
 2. **Pídelo** en una sesión nueva del agente, en la carpeta del proyecto: «instala dev-guidelines en este proyecto».
 3. **El agente detecta el modo.** Un repo git sin otros repos dentro → A; dos o más repos en la carpeta → B; un `dev/` con `.package-version` → actualización.
-4. **Te hace una sola pregunta** con lo propuesto: modo y carpeta, adaptadores (`claude` por defecto; `cursor` si existe `.cursor/`) y, en modo B, si ejecuta `git init` en `dev/`.
+4. **Te hace una sola pregunta** con lo propuesto: modo y carpeta, adaptadores (`claude` por defecto; `cursor` si existe `.cursor/`) y, en modo B, si ejecuta `git init` en `dev/` (opcional; por defecto no).
 5. **Ejecuta `scripts/install.py`.** Nunca copia archivos a mano. Si la salida termina con errores, se detiene y los corrige.
 6. **Propone `PROJECT.md` (núcleo) y `COMANDOS.md`** inspeccionando tus repos (`package.json`, `pyproject.toml`, `git log`…) y espera tu aprobación antes de escribir. Lo que no encuentra queda en `—`; solo te pregunta si hay algo que el agente no deba hacer ni tocar.
 7. **Para `DEV-PROFILE.md`** te hace como mucho una pregunta corta y opcional (puedes saltarla).
@@ -129,8 +129,10 @@ workspace/
 ```
 
 ```bash
-python -I scripts/install.py --mode B --target /ruta/a/workspace --git-init
+python ../dev-guidelines/scripts/install.py --mode B --target /ruta/a/workspace
 ```
+
+`dev/` es una copia de `dev-template/` del paquete. El instalador no ejecuta `git init` ni toca el git de `front/` o `back/`. Si quieres historial de tus tasks y docs, añade `--git-init`: solo hace `git init` dentro de `workspace/dev/`, sin conectar con ningún otro repo ni subir nada.
 
 Resultado:
 
@@ -140,7 +142,7 @@ workspace/
 ├── CLAUDE.md          @AGENTS.md
 ├── front/
 ├── back/
-└── dev/               repo git propio (con --git-init)
+└── dev/               repo git propio solo con --git-init
     ├── .gitignore     contiene DEV-PROFILE.md
     ├── .tools/
     └── ...
