@@ -44,6 +44,8 @@ Contrasta con el estado real del repositorio: confirma que el bug sigue reproduc
 
 ## Trabajo
 
+**Herramientas:** <!-- filas de ENTORNO.md §1 para investigar y probar este bug (con URL o nombre del MCP) y reglas E… aplicables -->
+
 1. Escribe una prueba que reproduzca el bug y **falle** antes del arreglo.
 2. <!-- Arreglo mínimo -->
 3. Comprueba que la prueba pasa y que no se rompe nada existente (comandos en `COMANDOS.md` §2).

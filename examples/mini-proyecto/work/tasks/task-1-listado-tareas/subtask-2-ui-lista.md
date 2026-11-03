@@ -1,4 +1,4 @@
-# Subtask 3 — Pantalla web con lista, formulario y filtros
+# Subtask 2 — Pantalla web con lista, formulario y filtros
 
 **Tipo:** funcionalidad
 **Esfuerzo:** M
@@ -10,11 +10,11 @@
 Lee antes de actuar:
 
 1. [README de la task](./README.md) y [decisions.md](./decisions.md).
-2. Reports de las subtasks 1 y 2 en `work/reports/task-1-listado-tareas/` (la 2 aún no existe: comprueba su estado real).
+2. [Report de la subtask 1](../../reports/task-1-listado-tareas/subtask-1-api.md) y, si se retoma, el report parcial de esta subtask.
 3. Docs: [api-tareas.md](../../../docs/contracts/api-tareas.md).
 4. Guías: playbook `develop-code` y el stack TypeScript + React.
 
-Contrasta este brief con el estado real del repositorio. Si la subtask 2 no está hecha, no inventes el resultado: avisa.
+Contrasta este brief con el estado real del repositorio. Si la subtask 1 no está hecha, no inventes el resultado: avisa.
 
 ## Objetivo dentro de la task
 
@@ -36,8 +36,11 @@ Como usuario, quiero una página con mi lista y un formulario, para gestionar mi
 - **No hacer:** cambios en `@back`, edición o borrado, estilos elaborados.
 - **Repos afectados:** `@front`
 - **Restricciones aplicables:** C1, C2, T1-C1.
+- **Por qué es una subtask aparte:** `@front` se publica por separado de `@back` (corte D2) y el diseño visual lo aprueba el desarrollador (D3).
 
 ## Trabajo
+
+**Herramientas:** front local en http://localhost:5173 y API local en http://127.0.0.1:8000/docs (`ENTORNO.md` §1); regla E1: verificar en pantalla antes de cerrar.
 
 1. Leer el contrato de la API en docs.
 2. Definir los tipos TypeScript de la respuesta.
@@ -55,7 +58,7 @@ Como usuario, quiero una página con mi lista y un formulario, para gestionar mi
 
 ## Dependencias y siguiente paso
 
-- **Necesita:** subtask 2.
+- **Necesita:** subtask 1 (hecha).
 - **Desbloquea:** cierre de la task.
 
 ## Fuera de alcance
@@ -71,6 +74,6 @@ Como usuario, quiero una página con mi lista y un formulario, para gestionar mi
 ## Entregables y cierre de sesión
 
 - Código y pruebas: `@front/src/`
-- Report: `work/reports/task-1-listado-tareas/subtask-3-ui-lista.md`
-- Changelog: `work/changelogs/task-1-listado-tareas/subtask-3-ui-lista.md`
+- Report: `work/reports/task-1-listado-tareas/subtask-2-ui-lista.md`
+- Changelog: `work/changelogs/task-1-listado-tareas/subtask-2-ui-lista.md`
 - Al cerrar la última subtask: informe de PR de la task y actualización de `INDEX.md`.

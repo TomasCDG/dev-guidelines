@@ -1,6 +1,6 @@
 # ROADMAP — backlog del paquete
 
-**Fecha:** 27 de octubre de 2026 · **Versión del paquete:** 0.7.0
+**Fecha:** 28 de octubre de 2026 · **Versión del paquete:** 0.8.0
 
 Backlog de funcionalidades futuras de dev-guidelines. **No son compromisos**: sirve para no perder ideas y ver qué viene. Lo que sale en una versión se mueve a `hecha` y se detalla en [CHANGELOG.md](./CHANGELOG.md). El porqué del diseño está en [historia/](../historia/README.md).
 

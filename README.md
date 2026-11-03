@@ -1,6 +1,6 @@
 # dev-guidelines
 
-Método de desarrollo agéntico portable (versión 0.7.0): tasks con briefs autocontenidos, informes, documentación técnica como fuente de verdad y un protocolo de sesión para retomar el trabajo con una frase («continúa task-N»).
+Método de desarrollo agéntico portable (versión 0.8.0): tasks con briefs autocontenidos, informes, documentación técnica como fuente de verdad y un protocolo de sesión para retomar el trabajo con una frase («continúa task-N»).
 
 Se instala como una carpeta `dev/` en tu repo (modo **A**) o junto a varios repos (modo **B**). Pocos tokens: el agente lee un enrutador corto y, de ahí, solo el playbook de la situación.
 
@@ -46,7 +46,7 @@ Al terminar corre un chequeo y debe decir `0 errores`. Siguientes pasos y detall
 |---|---|
 | `dev-setup` | Instalar el método en un proyecto |
 | `dev-update` | Actualizar un `dev/` ya instalado |
-| `dev-feedback` | Convertir las retros de `dev/RETRO.md` en propuestas de mejora del paquete |
+| `dev-feedback` | Convertir las retros de `dev/work/RETRO.md` en propuestas de mejora del paquete |
 
 ## Dónde está qué
 

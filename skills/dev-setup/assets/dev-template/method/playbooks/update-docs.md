@@ -23,7 +23,8 @@ Fuente de verdad sobre el **estado actual** del sistema, para agentes y desarrol
 | Estado y comportamiento actual del sistema | `docs/<categoría>/` |
 | Decisión que rige una task / todo el proyecto | `work/tasks/task-N/decisions.md` / `docs/decisions/` ([record-decision](./record-decision.md)) |
 | Cómo operar el proyecto | `docs/runbook/` (comandos generales: `COMANDOS.md`) |
-| Cómo ejecutar en **esta** máquina (WSL, rutas, puertos) | Una página de `docs/runbook/` |
+| Herramientas, servicios locales y cómo probar en vivo (común al equipo) | `config/ENTORNO.md` |
+| Particularidades de **una** máquina (WSL, rutas propias) | `config/DEV-PROFILE.md` |
 | Vocabulario del dominio | `docs/glossary.md` |
 | Deuda técnica, pendientes, ideas | `INDEX.md` (backlog) |
 | Historia, análisis, evidencia | `work/reports/` ([write-report](./write-report.md)) |

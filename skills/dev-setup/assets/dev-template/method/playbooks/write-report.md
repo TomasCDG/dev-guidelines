@@ -1,6 +1,6 @@
 ---
 name: write-report
-description: Redacta el report de una subtask, su changelog derivado y los planes-vs-realidad. Úsala cuando cierres una subtask, termines una investigación, necesites comparar el plan con lo construido o deban redactarse propuestas de desarrollo.
+description: Redacta el report de una subtask, su changelog, el plan-vs-realidad y el informe funcional. Úsala al cerrar una subtask o una investigación, al comparar el plan con lo construido, al redactar propuestas o al explicar a un equipo no técnico qué se puede hacer.
 ---
 
 # Redactar reports y changelogs
@@ -40,3 +40,12 @@ Antes o después de una task grande, compara lo planeado con lo construido y con
 ## 4. Propuestas de desarrollo
 
 Al final de una task o cambio, redáctalas con descripción, alcance, ventajas, riesgos y esfuerzo.
+
+## 5. Informe funcional
+
+Para lectores no técnicos (equipo, una call), cuando se pida. Plantilla: [report-funcional](../templates/report-funcional.md). Ubicación: `work/reports/task-N-nombre/informe-funcional.md`.
+
+- **Qué se puede hacer:** matriz capacidades × agrupaciones con ✅ ⚠️ ❌ —. ✅ solo lo probado; lo inferido va con ⚠️. Tablas chicas de período o pantallas si ayudan.
+- **Cómo probarlo:** tabla de pruebas (qué preguntar, qué debe verse, número esperado recalculado) y chequeos transversales.
+- **Límites conocidos** en tabla y **máximo 4 decisiones**, autocontenidas; si se confirma una definición, tabla de casos.
+- **Sin código, archivos ni commits en el cuerpo:** van en «Para tener a mano». Menos prosa, más tablas y diagramas.

@@ -14,7 +14,7 @@ Packs de `method/stacks/` que aplican.
 
 ## 2. Comandos
 
-Valen en cualquier máquina. Los de una máquina concreta (WSL, rutas, puertos) van en `docs/`.
+Valen en cualquier máquina. Servicios locales, URL, MCP y cómo probar en vivo: [ENTORNO.md](./ENTORNO.md); lo de tu máquina (WSL, rutas propias): `DEV-PROFILE.md`.
 
 | Acción | Comando | Repo (alias) |
 |---|---|---|

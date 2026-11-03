@@ -10,4 +10,4 @@ Todo es opcional. El agente no avisa por campos vacíos: si necesita un dato que
 | Idioma de las explicaciones en el chat | Español | El de documentación de `PROJECT.md` |
 | Formato de la respuesta final | Máx. 10 líneas: qué hice, qué verifiqué, qué decides tú | Breve: qué se hizo, qué se verificó, qué queda |
 | Atribución de IA en commits y PR | ninguna | `ninguna` |
-| Particularidades del entorno | Windows 11 con PowerShell; observador de archivos de Vite lento en discos de red: usar polling | Ninguna |
+| Particularidades de tu máquina | Windows 11 con PowerShell; observador de archivos de Vite lento en discos de red: usar polling | Ninguna |

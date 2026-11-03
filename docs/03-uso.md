@@ -1,6 +1,6 @@
 # Uso
 
-**Fecha:** 27 de octubre de 2026 · **Versión del paquete:** 0.7.0
+**Fecha:** 28 de octubre de 2026 · **Versión del paquete:** 0.8.0
 
 ## Contenido
 
@@ -23,11 +23,11 @@
 
 ## 1. La idea en un minuto
 
-Trabajas por **tasks** (un desarrollo completo) divididas en **subtasks** (una sesión de trabajo cada una). Cada subtask tiene un **brief** autocontenido: un archivo que un agente sin memoria puede leer y ejecutar. El estado vive en archivos (`INDEX.md` y el README de la task), no en tu cabeza ni en la memoria del chat. Por eso, para retomar, basta con decir «**continúa task-N**».
+Trabajas por **tasks** (un desarrollo completo). Cada task tiene normalmente **una sola subtask**; solo se divide con un motivo concreto (tamaño, entregas separadas, una aprobación a mitad, riesgo o una investigación previa: [`write-task` §5](../dev-template/method/playbooks/write-task.md#5-cuándo-dividir)). Cada subtask tiene un **brief** autocontenido: un archivo que un agente sin memoria puede leer y ejecutar. El estado vive en archivos (`INDEX.md` y el README de la task), no en tu cabeza ni en la memoria del chat. Por eso, para retomar, basta con decir «**continúa task-N**».
 
 | Tú haces | El agente hace |
 |---|---|
-| Describes qué quieres y apruebas las decisiones que son tuyas | Investiga, propone subtasks, redacta briefs |
+| Describes qué quieres y apruebas las decisiones que son tuyas | Investiga, propone el plan (normalmente una subtask), redacta briefs |
 | Pides una subtask («continúa task-1») | Lee lo mínimo, verifica el repo real, trabaja |
 | Revisas el report y decides qué sigue | Cierra con report, docs, estados y mensaje de commit |
 | Commiteas (o se lo pides) | Sugiere el mensaje y anota el hash después |
@@ -36,9 +36,9 @@ Trabajas por **tasks** (un desarrollo completo) divididas en **subtasks** (una s
 
 ```mermaid
 flowchart LR
-    a["Describes<br/>la task"] --> b["El agente propone<br/>subtasks y preguntas"]
+    a["Describes<br/>la task"] --> b["El agente propone<br/>plan y preguntas"]
     b --> c["Validas<br/>alcance y decisiones"]
-    c --> d["continúa task-N<br/>(una sesión por subtask)"]
+    c --> d["continúa task-N<br/>(una o varias sesiones por subtask)"]
     d --> e["Cierre: report,<br/>docs, estados"]
     e --> f{"¿Quedan<br/>subtasks?"}
     f -->|"sí"| d
@@ -54,7 +54,7 @@ flowchart LR
     class g z
 ```
 
-**Figura 1.** Ciclo de una task. Azul: planificación contigo. Verde: sesiones de trabajo. Ocre: decisión de cada vuelta. Morado: cierre. Pasos: (1) describes lo que quieres; (2) el agente investiga y propone; (3) validas; (4) cada subtask es una sesión nueva; (5) cada cierre deja el estado escrito; (6) al terminar la última, la task se archiva.
+**Figura 1.** Ciclo de una task. Azul: planificación contigo. Verde: sesiones de trabajo. Ocre: decisión de cada vuelta. Morado: cierre. Pasos: (1) describes lo que quieres; (2) el agente investiga y propone; (3) validas; (4) cada «continúa task-N» es una sesión nueva; una subtask larga sigue en otra sesión con un report parcial; (5) cada cierre deja el estado escrito; (6) al terminar la última, la task se archiva.
 
 ## 3. Paso 1: crear la task
 
@@ -63,7 +63,7 @@ El playbook que usa el agente es [`write-task`](../dev-template/method/playbooks
 1. **Describes lo que quieres** con tus palabras: objetivo, motivo, restricciones, qué queda fuera. Puedes escribirlo en un archivo (`work/tasks/task-N-nombre/task.md`) y adjuntarlo, o decirlo en el chat.
 2. **El agente investiga el código y los docs** antes de proponer, y separa hechos verificados de suposiciones.
 3. **Te pregunta solo lo que cambia comportamiento, alcance, arquitectura, datos o criterios de aceptación.** Para lo menor propone un valor por defecto marcado «decisión del agente».
-4. **Propone subtasks** con dependencias, esfuerzo y modelo sugerido. Tú validas, ajustas o recortas.
+4. **Propone el plan:** una subtask por defecto; el mínimo que no comprometa la comprobabilidad ni la separación de stacks. Más solo si cada corte cita su criterio (D1–D6) en la columna «Corte»; los cambios chicos y parecidos van juntos. Cada subtask extra cuesta un brief, un report y un cierre (unos 12 000 tokens), y el plan muestra ese costo. Tú validas, ajustas o recortas.
 5. **Escribe los archivos**:
 
 | Archivo | Contenido |
@@ -77,7 +77,7 @@ Cada brief es **autocontenido**: el agente que lo abra en otra sesión no necesi
 
 Prompt de ejemplo:
 
-> Quiero planificar una task nueva: añadir exportación a CSV del historial. Motivo: el equipo contable lo pide cada mes. No quiero tocar el módulo de facturación. Investiga el código, pregúntame lo imprescindible y propón subtasks. Usa el playbook write-task.
+> Quiero planificar una task nueva: añadir exportación a CSV del historial. Motivo: el equipo contable lo pide cada mes. No quiero tocar el módulo de facturación. Investiga el código, pregúntame lo imprescindible y propón el plan. Usa el playbook write-task.
 
 ## 4. Paso 2: trabajar una subtask
 
@@ -112,7 +112,7 @@ El agente sigue [`close-session`](../dev-template/method/playbooks/close-session
 | 5 | Estado de la subtask: `hecha` | README de la task |
 | 6 | «Activo ahora» y fila de la task | `INDEX.md` |
 | 7 | Decisiones nuevas; marca resueltas las filas de «Qué necesita del desarrollador» | `decisions.md` / `docs/decisions/` / README |
-| 8 | Mensaje de commit sugerido, con ID de task | Report |
+| 8 | Mensaje de commit sugerido, con ID de task, solo si la subtask cambió código del proyecto (nunca por archivos de `dev/`) | Report |
 | 9 | Preguntas abiertas y desviaciones, en la respuesta final | Chat |
 
 **Qué haces tú:** lees el report (está escrito para ti, con tablas y glosario si lo pediste), respondes las preguntas abiertas y, si quieres, commiteas con el mensaje sugerido. Cuando commitees, pide al agente que anote el hash (`hecha (commit <hash>)`) o escríbelo tú en el README de la task.
@@ -126,7 +126,7 @@ Cuando se cierra la última subtask, el agente:
 1. Limpia los docs afectados (sin notas provisionales; «verificado contra» al día).
 2. Redacta el informe de PR de la task ([`commit-pr`](../dev-template/method/playbooks/commit-pr.md)), si `COMANDOS.md` §3 lo pide.
 3. Promueve a `docs/decisions/` (ADR) las decisiones que seguirán rigiendo.
-4. Añade una **retro de 3 líneas** (qué funcionó, qué falló o sobró, qué cambiarías del método) como fila `pendiente` en `dev/RETRO.md` y marca «Retro pendiente: sí» en `INDEX.md`.
+4. Añade una **retro de 3 líneas** (qué funcionó, qué falló o sobró, qué cambiarías del método) como fila `pendiente` en `dev/work/RETRO.md` y marca «Retro pendiente: sí» en `INDEX.md`.
 5. **Archiva**: mueve `work/tasks/task-N-nombre/` a `work/tasks/archive/task-N-nombre/`, corrige los enlaces entrantes y deja la fila como `hecha (archivada)`. Los reports y changelogs no se mueven. El número no se reutiliza.
 
 La retro es tu forma de mejorar el método: cuando haya varias, procésalas con la skill `dev-feedback` ([sección 16](#16-feedback-del-método)).
@@ -161,7 +161,7 @@ Si usaste `--adapters claude`, también puedes nombrar la skill: «usa dev-close
 
 ## 8. Cómo leer INDEX.md
 
-[`INDEX.md`](../dev-template/INDEX.md) es el tablero. Cinco secciones:
+[`INDEX.md`](../dev-template/work/INDEX.md) es el tablero. Cinco secciones:
 
 | Sección | Qué te dice | Cuándo mirarla |
 |---|---|---|
@@ -221,7 +221,7 @@ Con subagentes o sesiones paralelas: reparte **dueños de archivos** explícitos
 
 | Haz | Evita |
 |---|---|
-| Una sesión nueva por subtask | Arrastrar horas de chat: el estado ya está en archivos |
+| Una sesión nueva por «continúa task-N»; si la subtask no termina, report parcial | Arrastrar horas de chat: el estado ya está en archivos |
 | Decir solo la frase de entrada | Re-explicar lo que ya está en el brief, el README o `decisions.md` |
 | Responder las preguntas del cierre | Dejarlas sin contestar: se usa el valor por defecto |
 | Mantener `INDEX.md` al día (el cierre lo hace) | Editarlo a mano sin avisar al agente |
@@ -242,7 +242,7 @@ Errores frecuentes y qué hacer:
 
 ## 14. Walkthrough con el ejemplo
 
-El ejemplo [`examples/mini-proyecto`](../examples/README.md) es un proyecto ficticio («Pendientes») con una task a medias: subtask 1 hecha, 2 en curso, 3 pendiente.
+El ejemplo [`examples/mini-proyecto`](../examples/README.md) es un proyecto ficticio («Pendientes») con una task a medias en dos subtasks: la 1 (API completa) hecha y la 2 (UI, separada por el corte D2) en curso.
 
 **Montarlo para probar:** sigue la receta de [examples/README.md](../examples/README.md#montar-el-ejemplo-para-probarlo) (da 0 errores y 3 avisos esperados).
 
@@ -250,11 +250,11 @@ El ejemplo [`examples/mini-proyecto`](../examples/README.md) es un proyecto fict
 
 | Paso | Qué abrir | Qué verás |
 |---|---|---|
-| 1 | [INDEX.md](../examples/mini-proyecto/INDEX.md) §1 | La task activa, la subtask 2 «en curso» y el pendiente al reanudar |
-| 2 | [README de la task](../examples/mini-proyecto/work/tasks/task-1-listado-tareas/README.md) | Estado por subtask, restricciones, «Qué necesita del desarrollador» |
+| 1 | [INDEX.md](../examples/mini-proyecto/work/INDEX.md) §1 | La task activa, la subtask 2 «en curso» y el pendiente al reanudar |
+| 2 | [README de la task](../examples/mini-proyecto/work/tasks/task-1-listado-tareas/README.md) | Estado por subtask, columna «Corte», restricciones, «Qué necesita del desarrollador» |
 | 3 | [decisions.md](../examples/mini-proyecto/work/tasks/task-1-listado-tareas/decisions.md) y [ADR-001](../examples/mini-proyecto/docs/decisions/ADR-001-solo-localhost.md) | Una decisión de la task promovida a global |
-| 4 | [Brief de la subtask 2](../examples/mini-proyecto/work/tasks/task-1-listado-tareas/subtask-2-filtros.md) | Las 11 secciones del brief, incluidas restricciones repetidas e «Impacto en docs» |
-| 5 | [Report de la subtask 1](../examples/mini-proyecto/work/reports/task-1-listado-tareas/subtask-1-api-crud.md) y [changelog](../examples/mini-proyecto/work/changelogs/task-1-listado-tareas/subtask-1-api-crud.md) | El cierre completo; el changelog repite la tabla «Qué cambió» |
+| 4 | [Brief de la subtask 1](../examples/mini-proyecto/work/tasks/task-1-listado-tareas/subtask-1-api.md) | Las 11 secciones del brief, incluidas restricciones repetidas e «Impacto en docs» |
+| 5 | [Report de la subtask 1](../examples/mini-proyecto/work/reports/task-1-listado-tareas/subtask-1-api.md) y [changelog](../examples/mini-proyecto/work/changelogs/task-1-listado-tareas/subtask-1-api.md) | El cierre completo; el changelog repite la tabla «Qué cambió» |
 | 6 | [docs/README.md](../examples/mini-proyecto/docs/README.md) | Índice con «léela cuando…» y frescura |
 
 Después, en una sesión de agente sobre ese `dev/`, escribe `continúa task-1`: debe abrir la subtask 2 leyendo `INDEX.md`, el README, el brief y los reports (el de la 1 y el parcial de la 2). **La verificación contra el repo real es teórica en el ejemplo**: los repos y el commit citados no existen.
@@ -278,13 +278,13 @@ El playbook [`diagnose`](../dev-template/method/playbooks/diagnose.md) revisa qu
 
 ## 16. Feedback del método
 
-El método mejora con el uso: cada proyecto acumula sus retros en `dev/RETRO.md` y la skill `dev-feedback` las convierte en propuestas de cambio al paquete.
+El método mejora con el uso: cada proyecto acumula sus retros en `dev/work/RETRO.md` y la skill `dev-feedback` las convierte en propuestas de cambio al paquete.
 
 **Cuándo pedirlo:** tras cerrar varias tasks, cuando `diagnose` lo recomiende (3 o más filas `pendiente`) o cuando notes una fricción repetida. Escribe «feedback del método» o «procesa la retro».
 
 **Qué hace:**
 
-1. Lee las filas `pendiente` de `dev/RETRO.md` y la versión instalada (`dev/.package-version`).
+1. Lee las filas `pendiente` de `dev/work/RETRO.md` y la versión instalada (`dev/.package-version`).
 2. Agrupa las parecidas y comprueba contra `dev/method/` que el problema sigue ahí; descarta con motivo las que ya no aplican.
 3. Redacta cada propuesta: título, evidencia, archivo del paquete afectado, cambio como parche o texto de issue, y riesgo.
 4. Te las muestra y valida contigo una por una o en bloque; solo lo validado se escribe.

@@ -12,7 +12,7 @@
 Lee antes de actuar:
 
 1. <!-- README de la task y decisions.md -->
-2. <!-- reports de las subtasks previas de las que depende -->
+2. <!-- reports de subtasks previas, si los hay (un report parcial de esta misma subtask, si se retoma) -->
 3. <!-- páginas de docs/ del área que vas a tocar -->
 4. <!-- guías aplicables: playbook develop-code y stacks activos -->
 
@@ -43,6 +43,8 @@ Contrasta este brief con el estado real del repositorio: no des por hecha una su
 
 ## Trabajo
 
+**Herramientas:** <!-- filas de ENTORNO.md §1 de las etapas de esta subtask (con URL o nombre del MCP) y reglas E… aplicables; «ninguna» si no hay -->
+
 1. <!-- Inspeccionar el código y las fuentes relevantes -->
 2. <!-- Paso concreto y comprobable -->
 3. <!-- Verificar ejecutando (comandos en COMANDOS.md §2) -->
@@ -54,11 +56,18 @@ Contrasta este brief con el estado real del repositorio: no des por hecha una su
 - <!-- Criterio 1 -->
 - <!-- Criterio 2 -->
 
+<!-- Valores de referencia (cifras esperadas): recalculados contra la fuente antes de copiarlos, con cómo se obtuvieron; si no, «sin verificar». -->
+
+| Valor de referencia | Cómo se obtuvo | Fecha |
+|---|---|---|
+| <!-- p. ej. mediana ≈ 13 h; borra la tabla si no hay cifras --> | <!-- consulta, script de ENTORNO.md §2 --> | <!-- AAAA-MM-DD --> |
+
 ## Dependencias y siguiente paso
+
+<!-- Si es la única subtask de la task, borra la lista y escribe «—». -->
 
 - **Necesita:** <!-- subtasks realmente necesarias -->
 - **Desbloquea:** <!-- subtasks siguientes -->
-- **En paralelo:** <!-- solo si no edita los mismos archivos -->
 
 ## Fuera de alcance
 

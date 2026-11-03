@@ -32,9 +32,10 @@ Resultado: carpeta `dev/` y un `AGENTS.md` en la raíz que apunta a ella. Lo gen
 
 | Archivo | Quién lo usa | Qué poner | Versionado |
 |---|---|---|---|
-| `dev/PROJECT.md` (se lee siempre) | Todo el equipo | Repos con alias (`@main`, o `@front` y `@back`), idiomas, restricciones, zonas intocables | Sí |
-| `dev/COMANDOS.md` (bajo demanda) | Todo el equipo | Stacks, comandos de test y run, política de commits; se rellena solo con lo que se encuentra | Sí |
-| `dev/DEV-PROFILE.md` (opcional) | Solo tú | Tecnologías que no conoces, idioma del chat, formato de la respuesta final, atribución de IA | No |
+| `dev/config/PROJECT.md` (se lee siempre) | Todo el equipo | Repos con alias (`@main`, o `@front` y `@back`), idiomas, restricciones, zonas intocables | Sí |
+| `dev/config/ENTORNO.md` (se lee siempre) | Todo el equipo | Herramientas y servicios (MCP, front y back locales con su URL), en qué etapa se usa cada uno, cómo probar en vivo | Sí |
+| `dev/config/COMANDOS.md` (bajo demanda) | Todo el equipo | Stacks, comandos de test y run, política de commits; se rellena solo con lo que se encuentra | Sí |
+| `dev/config/DEV-PROFILE.md` (opcional) | Solo tú | Tecnologías que no conoces, idioma del chat, formato de la respuesta final, atribución de IA | No |
 
 No hay campos obligatorios ni avisos por campos vacíos (`—` = sin definir): cuando el agente necesita un dato, te lo pregunta una vez, propone un valor y lo anota.
 
@@ -48,20 +49,20 @@ Abre tu herramienta de agente en el repo (o en la carpeta que contiene los repos
 
 | Quieres | Escribe |
 |---|---|
-| Crear una task | «Crea la task `<nombre>`. Lee mi descripción en `dev/work/tasks/<carpeta>/README.md`, propón subtasks y valídalas conmigo.» |
+| Crear una task | «Crea la task `<nombre>`. Lee mi descripción en `dev/work/tasks/<carpeta>/README.md`, propón el plan y valídalo conmigo.» |
 | Retomar | «continúa task-1» |
 | Siguiente subtask | «siguiente» |
-| Una subtask concreta | «subtask 3 de task-1» |
+| Una subtask concreta | «subtask 2 de task-1» |
 | Arreglar un bug | «bug-1» |
 | Actualizar el método | «actualiza dev-guidelines» |
 
-El agente lee solo lo necesario, verifica el repo, trabaja la subtask y al cerrar deja: report, docs actualizados, changelog (si tocó código), estado en `INDEX.md` y un mensaje de commit sugerido. Al cerrar una task anota una retro en `dev/RETRO.md`; cuando haya varias, pide «feedback del método» ([03-uso.md §16](./03-uso.md#16-feedback-del-método)).
+El agente lee solo lo necesario, verifica el repo, trabaja la subtask y al cerrar deja: report, docs actualizados, changelog (si tocó código), estado en `INDEX.md` y un mensaje de commit sugerido. Al cerrar una task anota una retro en `dev/work/RETRO.md`; cuando haya varias, pide «feedback del método» ([03-uso.md §16](./03-uso.md#16-feedback-del-método)).
 
 ## 5. El ciclo, en una imagen
 
 ```mermaid
 flowchart LR
-    a["Tú: README<br/>de la task"] --> b["Agente propone<br/>subtasks"]
+    a["Tú: README<br/>de la task"] --> b["Agente propone<br/>el plan"]
     b --> c["«continúa<br/>task-N»"]
     c --> d["Trabaja una<br/>subtask"]
     d --> e["Cierre: report,<br/>docs, INDEX"]
@@ -83,7 +84,7 @@ flowchart LR
 | Síntoma | Qué hacer |
 |---|---|
 | `check.py` da errores | Lee el mensaje: indica archivo y línea. Un `TODO` literal en `PROJECT.md` o `COMANDOS.md` es aviso: cámbialo por `—`. |
-| El agente no sabe por dónde seguir | Revisa «Activo ahora» en `dev/INDEX.md`. |
+| El agente no sabe por dónde seguir | Revisa «Activo ahora» en `dev/work/INDEX.md`. |
 | Una skill no se activa | No importa: `dev/AGENTS.md` nombra el playbook equivalente en `dev/method/playbooks/`. |
 | No sabes si `dev/` está sano | Dile al agente «diagnostica dev/»: ejecuta `check.py`, revisa lo que el script no ve y te propone arreglos. |
 

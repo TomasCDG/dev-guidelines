@@ -1,8 +1,8 @@
-# Task 1, subtask 1 — API para crear y listar tareas
+# Task 1, subtask 1 — API para crear, listar y filtrar tareas
 
 **Fecha:** 2026-03-03
 **Rama / repos:** `feat/listado-tareas` en `@back`; commit `a1b2c3d`
-**Brief:** [subtask-1-api-crud.md](../../tasks/task-1-listado-tareas/subtask-1-api-crud.md)
+**Brief:** [subtask-1-api.md](../../tasks/task-1-listado-tareas/subtask-1-api.md)
 
 ## Contenido
 
@@ -25,7 +25,7 @@
 
 ## 2. Resumen
 
-La API crea y lista tareas y las conserva al reiniciar. Se cumplieron todos los criterios de aceptación del brief.
+La API crea, lista y filtra tareas por estado y por texto, y las conserva al reiniciar. Se cumplieron todos los criterios de aceptación del brief.
 
 ```mermaid
 flowchart LR
@@ -39,16 +39,16 @@ flowchart LR
     class db out
 ```
 
-**Figura 1.** Camino de una petición. Azul: entrada. Verde: código nuevo. Morado: almacenamiento. 1. Llega la petición. 2. El endpoint valida los datos. 3. El repositorio guarda o lee. 4. SQLite persiste en un archivo.
+**Figura 1.** Camino de una petición. Azul: entrada. Verde: código nuevo. Morado: almacenamiento. 1. Llega la petición. 2. El endpoint valida los datos y los filtros. 3. El repositorio guarda o lee, con los filtros en la consulta SQL. 4. SQLite persiste en un archivo.
 
 ## 3. Qué cambió
 
 | Tipo | Archivo (con alias) | Cambio |
 |---|---|---|
 | Nuevo | `@back/src/pendientes/models.py` | Modelo `Task` y validación del título. |
-| Nuevo | `@back/src/pendientes/repository.py` | Acceso a SQLite aislado de los endpoints. |
-| Cambiado | `@back/src/pendientes/main.py` | Endpoints `POST /tasks` y `GET /tasks`; enlace a `127.0.0.1`. |
-| Nuevo | `@back/tests/test_tasks.py` | 4 pruebas del núcleo mínimo. |
+| Nuevo | `@back/src/pendientes/repository.py` | Acceso a SQLite aislado de los endpoints; filtros `status` y `q` en la consulta. |
+| Cambiado | `@back/src/pendientes/main.py` | Endpoints `POST /tasks` y `GET /tasks` (con `status` y `q`); enlace a `127.0.0.1`. |
+| Nuevo | `@back/tests/test_tasks.py` | 7 pruebas del núcleo mínimo. |
 
 ## 4. Verificación
 
@@ -56,7 +56,8 @@ flowchart LR
 |---|---|---|
 | `pytest`, `ruff check .`, `mypy src` | pasan | Salida de la sesión |
 | `curl` crear y listar | correcto (201 y orden descendente) | Capturas en `work/reports/task-1-listado-tareas/assets/` |
-| Título vacío | 422 | Prueba automática |
+| Filtros `status`, `q` y combinados | correcto, sin distinguir mayúsculas | Pruebas automáticas y `curl` |
+| Título vacío y `status=otro` | 422 | Pruebas automáticas |
 | Reinicio de la API | las tareas se conservan | Prueba manual |
 
 **No se pudo verificar:** nada.
@@ -66,6 +67,7 @@ flowchart LR
 | Tema | Decisión o desviación | Motivo |
 |---|---|---|
 | Orden del listado | Más nueva primero (decisión del agente). | No lo fijaba el brief; es lo más útil para una lista. |
+| Acentos en `q` | No se ignoran (valor por defecto del brief). | El desarrollador no respondió; queda anotado en «Qué necesita del desarrollador». |
 
 **Preguntas abiertas:** ninguna.
 
@@ -80,14 +82,14 @@ flowchart LR
 
 ## 7. Siguiente paso
 
-Subtask 2: añadir los filtros `status` y `q` a `GET /tasks`. Primero comprobar que `main.py` sigue devolviendo todo sin parámetros, para no romper el contrato (C3).
+Subtask 2: la pantalla en `@front`, que consume el contrato de [api-tareas.md](../../../docs/contracts/api-tareas.md) sin calcular filtros (T1-C1).
 
 ## 8. Mensaje de commit sugerido
 
 ```
-feat(api): create and list tasks with SQLite storage [task-1]
+feat(api): create, list and filter tasks with SQLite storage [task-1]
 
 - add Task model with title validation
-- add SQLite repository
+- add SQLite repository with status and text filters
 - add POST /tasks and GET /tasks bound to 127.0.0.1
 ```

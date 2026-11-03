@@ -1,8 +1,9 @@
 """Hook SessionStart opcional de Claude Code para dev-guidelines.
 
 Imprime como contexto adicional (en forma de hechos, < 2000 caracteres) la sección
-«Activo ahora» de dev/INDEX.md y avisa solo si falta PROJECT.md o COMANDOS.md, o si
-quedan `TODO` literales (un `—` significa «sin definir» y no se avisa).
+«Activo ahora» de dev/work/INDEX.md y avisa solo si falta config/PROJECT.md o config/COMANDOS.md, si
+quedan `TODO` literales (un `—` significa «sin definir» y no se avisa) o si dev/ tiene la estructura
+anterior a 0.8.0 (archivos del proyecto en su raíz).
 No bloquea ni falla: ante cualquier problema no imprime nada.
 
 Matcher recomendado: startup|resume|compact. Solo usa la biblioteca estándar.
@@ -24,7 +25,7 @@ def find_dev(argv: list[str]) -> Path | None:
     if argv:
         return Path(argv[0])
     for base in (os.environ.get("CLAUDE_PROJECT_DIR"), os.getcwd()):
-        if base and (Path(base) / "dev" / "INDEX.md").is_file():
+        if base and (Path(base) / "dev" / "AGENTS.md").is_file():
             return Path(base) / "dev"
     return None
 
@@ -60,16 +61,19 @@ def count_todos(path: Path) -> int | None:
 
 def build(dev: Path) -> str:
     facts: list[str] = []
-    index = dev / "INDEX.md"
+    if (dev / "PROJECT.md").is_file() or (dev / "INDEX.md").is_file():
+        facts.append("dev/ tiene la estructura anterior a 0.8.0 (PROJECT.md, INDEX.md… en su raíz): migra con dev-update.")
+        return "\n".join(facts)
+    index = dev / "work" / "INDEX.md"
     if index.is_file():
         active = section(index.read_text(encoding="utf-8", errors="replace"), "activo ahora")
         rows = [r for r in active.splitlines() if r.startswith("|") and not re.match(r"^\|[\s\-|]+\|$", r)]
-        facts.append("Estado activo (dev/INDEX.md):")
+        facts.append("Estado activo (dev/work/INDEX.md):")
         facts.extend(rows[1:] if len(rows) > 1 else rows)
-    for name in ("PROJECT.md", "COMANDOS.md"):
+    for name in ("config/PROJECT.md", "config/COMANDOS.md"):
         if not (dev / name).is_file():
-            facts.append(f"{name}: no existe" + (" (actualiza con dev-update)." if name == "COMANDOS.md" else "."))
-    for name in ("PROJECT.md", "COMANDOS.md", "DEV-PROFILE.md"):
+            facts.append(f"{name}: no existe" + (" (actualiza con dev-update)." if name.endswith("COMANDOS.md") else "."))
+    for name in ("config/PROJECT.md", "config/ENTORNO.md", "config/COMANDOS.md", "config/DEV-PROFILE.md"):
         todos = count_todos(dev / name)
         if todos:
             facts.append(f"{name}: {todos} líneas con TODO literal (cámbialas por «—» si no hay dato).")

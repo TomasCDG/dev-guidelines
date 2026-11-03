@@ -5,7 +5,7 @@ description: Planifica y corrige un bug con el cambio mínimo y una prueba que f
 
 # Bugfixing
 
-Los bugs siguen la lógica de las tasks ([write-task](./write-task.md)) en `work/bugs/`, con las reglas de [develop-code](./develop-code.md). Para ejecutar pruebas y comandos lee [COMANDOS.md](../../COMANDOS.md) §2 (si falta uno, pregúntalo una vez y anótalo).
+Los bugs siguen la lógica de las tasks ([write-task](./write-task.md)) en `work/bugs/`, con las reglas de [develop-code](./develop-code.md). Para ejecutar pruebas y comandos lee [COMANDOS.md](../../config/COMANDOS.md) §2 (si falta uno, pregúntalo una vez y anótalo).
 
 ## Organización
 
@@ -13,7 +13,7 @@ Los bugs siguen la lógica de las tasks ([write-task](./write-task.md)) en `work
 |---|---|
 | Bug | `work/bugs/bug-N-nombre/` (numeración consecutiva propia; archivados en `work/bugs/archive/`) |
 | Resumen y decisiones | `work/bugs/bug-N-nombre/README.md` ([bug-README](../templates/bug-README.md)) |
-| Unidad de trabajo | `work/bugs/bug-N-nombre/subtask-N-descripcion.md` ([bug-subtask](../templates/bug-subtask.md)) |
+| Unidad de trabajo | `work/bugs/bug-N-nombre/subtask-1-descripcion.md` ([bug-subtask](../templates/bug-subtask.md)); por defecto una sola, y otra solo con un criterio de corte de [write-task](./write-task.md) §5 |
 | Informes | `work/reports/bug-N-nombre/` |
 | Changelogs | `work/changelogs/bug-N-nombre/` (solo si cambia código funcional) |
 

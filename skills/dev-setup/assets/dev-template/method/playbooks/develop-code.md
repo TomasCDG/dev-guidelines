@@ -28,8 +28,8 @@ description: Aplica las reglas de código limpio, arquitectura y testing, más l
 - Pruebas unitarias simples, con mocks y fixtures mínimos; **aisladas** (sin servicios ni recursos externos salvo que el brief pida integración o extremo a extremo).
 - **AAA:** Arrange (preparar), Act (actuar), Assert (afirmar).
 - **Deterministas y rápidas:** mismo resultado en cualquier entorno; sin depender del reloj, del azar ni del orden.
-- **Núcleo mínimo en cada subtask:** las funciones de las que dependen los criterios de aceptación (caso feliz y el caso límite que cite el brief). La matriz completa se pide en subtasks de endurecimiento.
-- **Verificación real:** si el cambio es observable, ejecútalo (comandos en [COMANDOS.md](../../COMANDOS.md) §2; si falta el que necesitas, pregúntalo una vez, propón uno y anótalo allí; los de esta máquina, en `docs/`) y comprueba el resultado, no solo que pasen las pruebas. Informa de lo que no pudiste ejecutar.
+- **Núcleo mínimo en cada subtask:** las funciones de las que dependen los criterios de aceptación (caso feliz y el caso límite que cite el brief). La matriz completa va en la misma subtask si el brief la pide en sus criterios de aceptación.
+- **Verificación real:** si el cambio es observable, ejecútalo (comandos en [COMANDOS.md](../../config/COMANDOS.md) §2; si falta el que necesitas, pregúntalo una vez, propón uno y anótalo allí; servicios, URL y cómo probar en vivo, en [ENTORNO.md](../../config/ENTORNO.md) §2) y comprueba el resultado, no solo que pasen las pruebas. Informa de lo que no pudiste ejecutar.
 
 ## 4. Stacks
 
@@ -40,3 +40,5 @@ Lee **solo** los packs marcados como activos en `COMANDOS.md` §1 (si todos vale
 | Python | [python](../stacks/python.md) |
 | TypeScript + React | [typescript-react](../stacks/typescript-react.md) |
 | Swift / iOS | [swift](../stacks/swift.md) |
+
+Los packs solo traen reglas técnicas. **Cómo explicar** vale para cualquier stack: si una tecnología está en «Tecnologías que NO conozco» de `DEV-PROFILE.md`, explica en lenguaje sencillo sus términos esenciales (qué es y para qué sirve) en el brief, el report y la respuesta; por ejemplo, en React: componente, *props*, *hook*.

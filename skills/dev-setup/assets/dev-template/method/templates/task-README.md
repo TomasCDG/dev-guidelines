@@ -36,36 +36,25 @@ Restricciones globales. Las del proyecto están en `PROJECT.md` §3 (`C1…`); a
 
 ## 3. Plan y dependencias
 
-<!-- Elimina el diagrama si la task tiene una sola subtask. -->
+<!-- Borra esta sección si la task tiene una sola subtask (lo normal: write-task §5). Si hay más, cada una cita su criterio de corte D1–D6 en el índice; con más de 3, añade un párrafo «Por qué N». Antes de pedir aprobación, fusiona las que puedan ir juntas sin romper un corte ni la comprobabilidad; los cambios chicos y parecidos van en una sola subtask. Costo aproximado: subtasks × 12 000 tokens. -->
 
 ```mermaid
 flowchart TD
     s1["1 Título corto"] --> s2["2 Título corto"]
-    s2 --> s3["3 Título corto"]
-    s2 --> s4["4 Título corto"]
-    s3 --> s5["5 Pruebas y limpieza"]
-    s4 --> s5
-
-    classDef frame fill:#3d5a80,stroke:#2a3f5a,color:#ffffff
-    classDef feat fill:#2f6b5c,stroke:#1f4a3f,color:#ffffff
-    classDef qa fill:#5a4e7c,stroke:#3c3453,color:#ffffff
-    class s1,s2 frame
-    class s3,s4 feat
-    class s5 qa
 ```
 
-**Figura 1.** Dependencias entre subtasks. Azul: marco. Verde: funcionalidad. Morado: endurecimiento. <!-- Describe punto por punto qué muestra el diagrama y qué subtasks pueden correr en paralelo. -->
+**Figura 1.** Dependencias entre subtasks. <!-- Describe qué muestra el diagrama y por qué hace falta cada corte. -->
 
 1. <!-- Qué hace la subtask 1 y qué se puede demostrar al terminarla. -->
-2. <!-- Subtasks que pueden correr en paralelo solo si no editan los mismos archivos. -->
+2. <!-- Qué hace la subtask 2 y qué criterio de corte la separa. -->
 
 ## 4. Índice de subtasks
 
 Esfuerzo: S horas · M un día · L varios días. Estado: `pendiente` · `en curso` · `hecha` (sin commit) · `hecha (commit <hash>)`. **El agente actualiza la columna Estado al cerrar cada subtask** y refleja el resumen en `INDEX.md`.
 
-| # | Subtask | Tipo | Resultado | Esfuerzo | Modelo sugerido | Depende de | Estado |
-|---|---|---|---|---|---|---|---|
-| 1 | [subtask-1-descripcion](./subtask-1-descripcion.md) | <!-- marco / funcionalidad / endurecimiento / investigación --> | <!-- resultado observable --> | <!-- S/M/L --> | <!-- opcional --> | — | pendiente |
+| # | Subtask | Tipo | Resultado | Esfuerzo | Modelo sugerido | Depende de | Corte | Estado |
+|---|---|---|---|---|---|---|---|---|
+| 1 | [subtask-1-descripcion](./subtask-1-descripcion.md) | <!-- marco / funcionalidad / endurecimiento / investigación --> | <!-- resultado observable --> | <!-- S/M/L --> | <!-- opcional --> | — | — | pendiente |
 
 ## 5. Qué necesita del desarrollador
 

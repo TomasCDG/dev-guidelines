@@ -1,6 +1,6 @@
 # Instalación
 
-**Fecha:** 27 de octubre de 2026 · **Versión del paquete:** 0.7.0
+**Fecha:** 28 de octubre de 2026 · **Versión del paquete:** 0.8.0
 
 Para una instalación en 5 minutos, ver [00-quickstart.md](./00-quickstart.md); aquí está el detalle.
 
@@ -27,7 +27,7 @@ Una carpeta `dev/` dentro de tu proyecto, copiada desde [`dev-template/`](../dev
 
 ```mermaid
 flowchart LR
-    pkg["dev-guidelines/<br/>(este repo)"] -->|"install.py<br/>(o la skill dev-setup)"| dev["tu-proyecto/dev/<br/>AGENTS · PROJECT · INDEX<br/>method · work · docs · .tools"]
+    pkg["dev-guidelines/<br/>(este repo)"] -->|"install.py<br/>(o la skill dev-setup)"| dev["tu-proyecto/dev/<br/>AGENTS · config · work<br/>method · docs · .tools"]
     pkg -->|"punteros"| root["AGENTS.md y CLAUDE.md<br/>en la raíz"]
     dev -->|"--adapters"| ad[".claude/ y .cursor/<br/>skills, reglas y agente generados"]
 
@@ -74,7 +74,7 @@ La skill [`skills/dev-setup/`](../skills/dev-setup/SKILL.md) sigue el formato Ag
 3. **El agente detecta el modo.** Un repo git sin otros repos dentro → A; dos o más repos en la carpeta → B; un `dev/` con `.package-version` → actualización.
 4. **Te hace una sola pregunta** con lo propuesto: modo y carpeta, adaptadores (`claude` por defecto; `cursor` si existe `.cursor/`) y, en modo B, si ejecuta `git init` en `dev/` (opcional; por defecto no).
 5. **Ejecuta `scripts/install.py`.** Nunca copia archivos a mano. Si la salida termina con errores, se detiene y los corrige.
-6. **Propone `PROJECT.md` (núcleo) y `COMANDOS.md`** inspeccionando tus repos (`package.json`, `pyproject.toml`, `git log`…) y espera tu aprobación antes de escribir. Lo que no encuentra queda en `—`; solo te pregunta si hay algo que el agente no deba hacer ni tocar.
+6. **Propone `PROJECT.md` (núcleo), `ENTORNO.md` y `COMANDOS.md`** inspeccionando tus repos (`package.json`, `pyproject.toml`, `.mcp.json`, `git log`…) y espera tu aprobación antes de escribir. Lo que no encuentra queda en `—`; solo te pregunta si hay algo que el agente no deba hacer ni tocar.
 7. **Para `DEV-PROFILE.md`** te hace como mucho una pregunta corta y opcional (puedes saltarla).
 8. **Ejecuta `check.py` y resume** el resultado: qué se instaló, qué falta y los siguientes pasos.
 
@@ -113,7 +113,7 @@ Resultado esperado en `mi-repo/`:
 | `.cursor/rules/dev-*.mdc` | Solo con `--adapters cursor`. |
 | `dev/.package-version` | Versión, fecha, modo y adaptadores instalados (`version`, `installed`, `mode`, `adapters`; en una actualización, también `previous`). |
 | `dev/.package-manifest` | Hash sha256 de cada archivo del paquete instalado (`sha256  ruta`); sirve para detectar lo que editaste a mano. |
-| `dev/RETRO.md` | Tabla de retros del proyecto; solo se crea si falta ([02-configuracion.md §11](./02-configuracion.md#13-retromd-retros-del-proyecto)). |
+| `dev/work/RETRO.md` | Tabla de retros del proyecto; solo se crea si falta ([02-configuracion.md §14](./02-configuracion.md#14-retromd-retros-del-proyecto)). |
 | `dev/.backup/` | Solo tras una actualización en la que habías editado archivos del paquete: copia de esos archivos (§10). |
 
 Si `AGENTS.md` o `CLAUDE.md` ya existían, el script pregunta antes de **añadir al final** una referencia a `dev/AGENTS.md`; no toca el resto del archivo. Al terminar ejecuta `check.py` sobre `dev/` e imprime el resultado.
@@ -143,12 +143,16 @@ workspace/
 ├── front/
 ├── back/
 └── dev/               repo git propio solo con --git-init
-    ├── .gitignore     contiene DEV-PROFILE.md
-    ├── .tools/
-    └── ...
+    ├── .gitignore     contiene config/DEV-PROFILE.md
+    ├── AGENTS.md      enrutador
+    ├── config/        PROJECT.md, ENTORNO.md, COMANDOS.md, DEV-PROFILE.md
+    ├── work/          INDEX.md, RETRO.md, tasks/, bugs/, reports/, changelogs/
+    ├── docs/
+    ├── method/
+    └── .tools/
 ```
 
-Después, en `dev/PROJECT.md` §1 elimina el alias `@main` y declara uno por repo (`@front` → `../front`, `@back` → `../back`). Detalle en [02-configuracion.md](./02-configuracion.md#3-repos-y-alias-projectmd-1). Trabaja siempre abriendo el agente en la raíz del `workspace/`.
+Después, en `dev/config/PROJECT.md` §1 elimina el alias `@main` y declara uno por repo (`@front` → `../front`, `@back` → `../back`). Detalle en [02-configuracion.md](./02-configuracion.md#3-repos-y-alias-projectmd-1). Trabaja siempre abriendo el agente en la raíz del `workspace/`.
 
 ## 6. Referencia de opciones
 
@@ -182,7 +186,7 @@ El método funciona **sin** adaptadores: `AGENTS.md` y el catálogo de `INDEX.md
 | `claude` | `.claude/skills/dev-<nombre>/SKILL.md` (10) | Skills que se activan por su descripción. |
 | `claude` | `.claude/rules/dev-*.md` con `paths:` (5) | Cargan el playbook al tocar `dev/docs/**`, `dev/work/bugs/**`, `dev/work/tasks/**`, `dev/work/reports/**` y `dev/work/changelogs/**`, o `dev/docs/decisions/**`. |
 | `claude` | `.claude/agents/dev-doctor.md` | Agente de solo lectura (Read, Grep, Glob, Bash) que diagnostica `dev/` con el playbook `diagnose` ([03-uso.md §15](./03-uso.md#15-diagnóstico-de-salud)). |
-| `claude` | `dev/.adapters/session-start.py` y `settings-snippet.json` | Hook opcional; **no se activa solo** ([02-configuracion.md §10](./02-configuracion.md#10-hook-sessionstart-opcional)). |
+| `claude` | `dev/.adapters/session-start.py` y `settings-snippet.json` | Hook opcional; **no se activa solo** ([02-configuracion.md §11](./02-configuracion.md#11-hook-sessionstart-opcional)). |
 | `cursor` | `.cursor/rules/dev-agents.mdc` (siempre activa) y una regla por playbook | Reglas «Apply Intelligently» por descripción. |
 
 Reglas de la generación:
@@ -201,8 +205,8 @@ Los archivos generados no deben editarse a mano: se pierden al regenerar. Para c
 
 | Hace | No hace |
 |---|---|
-| Copia `AGENTS.md`, `method/` (playbooks, stacks y plantillas) y `.tools/check.py` (archivos del paquete). | Rellenar `PROJECT.md`, `COMANDOS.md` ni `DEV-PROFILE.md`: quedan con `—` (lo hace la skill `dev-setup` contigo). |
-| Crea `PROJECT.md`, `COMANDOS.md`, `DEV-PROFILE.md`, `INDEX.md`, `docs/`, `work/tasks/`, `work/bugs/`, `work/reports/`, `work/changelogs/`, `docs/decisions/` y `RETRO.md` **solo si faltan**. | Sobrescribir tus datos en una actualización. |
+| Copia `AGENTS.md`, `method/` (playbooks, stacks y plantillas) y `.tools/check.py` (archivos del paquete). | Rellenar `config/PROJECT.md`, `config/COMANDOS.md` ni `config/DEV-PROFILE.md`: quedan con `—` (lo hace la skill `dev-setup` contigo). |
+| Crea `config/` (`PROJECT.md`, `ENTORNO.md`, `COMANDOS.md`, `DEV-PROFILE.md`), `work/` (`INDEX.md`, `RETRO.md`, `tasks/`, `bugs/`, `reports/`, `changelogs/`) y `docs/` (con `decisions/`) **solo si faltan**. | Sobrescribir tus datos en una actualización. |
 | Crea o completa `AGENTS.md` y `CLAUDE.md` de la raíz, con confirmación si ya existían. | Modificar tu configuración de Claude Code (`settings.json`). |
 | Genera los adaptadores pedidos con `--adapters`. | Hacer commits ni `git add`. |
 | Añade exclusiones a `.git/info/exclude` (ver §9) o crea `dev/.gitignore` (B). | Instalar dependencias: no hay ninguna. |
@@ -214,7 +218,7 @@ Los archivos generados no deben editarse a mano: se pierden al regenerar. Para c
 | Archivo o carpeta | Modo A | Modo B |
 |---|---|---|
 | `dev/` | No (exclusión local) | Sí, en su propio repo |
-| `dev/DEV-PROFILE.md` | No (exclusión local) | No (`dev/.gitignore`) |
+| `dev/config/DEV-PROFILE.md` | No (exclusión local) | No (`dev/.gitignore`) |
 | `dev/.backup/` | No (exclusión local `dev/.backup/`) | No (`dev/.gitignore`) |
 | `dev/.feedback/` (lo crea `dev-feedback`) | No (exclusión local `dev/.feedback/`) | No (`dev/.gitignore`) |
 | `AGENTS.md`, `CLAUDE.md` de la raíz | No: se excluyen **solo los que creó el instalador** | Si la raíz del workspace es un repo git, se excluyen los que creó el instalador; si no, no hay nada que excluir |
@@ -277,9 +281,9 @@ Usa el mismo destino y modo de la instalación. Con `--yes` no pregunta; **sin t
 
 | Se reemplaza | Se conserva |
 |---|---|
-| `AGENTS.md`, `method/`, `.tools/check.py` | `PROJECT.md`, `COMANDOS.md`, `DEV-PROFILE.md`, `INDEX.md`, `RETRO.md`, `docs/`, `work/tasks/`, `work/bugs/`, `work/reports/`, `work/changelogs/`, `docs/decisions/` |
+| `AGENTS.md`, `method/`, `.tools/check.py` | `config/` (`PROJECT.md`, `ENTORNO.md`, `COMANDOS.md`, `DEV-PROFILE.md`), `work/` (`INDEX.md`, `RETRO.md`, `tasks/`, `bugs/`, `reports/`, `changelogs/`), `docs/` (con `decisions/`) |
 
-Los archivos de usuario solo se crean si faltan. El instalador **no** adapta el contenido de `INDEX.md`, `PROJECT.md` y similares a un formato nuevo: de eso se encarga `dev-update` con `MIGRATIONS.md`. Pasar a 0.6.0 exige antes `migrate.py` (mueve `tasks/`, `bugs/`, `reports/`, `changelogs/` a `work/`, `decisions/` a `docs/decisions/` y `guidelines/` y `templates/` a `method/`, y reescribe los enlaces; con repo git en `dev/` usa `git mv`; deja copia en `dev/.backup/<fecha>-migracion-0.6.0/`). Pasar a 0.5.0 exigió esa migración (crear `COMANDOS.md` con las antiguas secciones 4, 5 y 8 de `PROJECT.md`, y reducir `PROJECT.md` y `DEV-PROFILE.md`): `dev-update` muestra el antes/después de cada archivo, espera tu aprobación y guarda una copia en `dev/.backup/`.
+Los archivos de usuario solo se crean si faltan. El instalador **no** adapta el contenido de `INDEX.md`, `PROJECT.md` y similares a un formato nuevo: de eso se encarga `dev-update` con `MIGRATIONS.md`. Pasar a 0.8.0 exige antes `migrate.py`: mueve `PROJECT.md`, `COMANDOS.md` y `DEV-PROFILE.md` a `config/`, e `INDEX.md` y `RETRO.md` a `work/`, y reescribe los enlaces (copia en `dev/.backup/<fecha>-migracion-0.8.0/`). Pasar a 0.6.0 exigió antes `migrate.py` (mueve `tasks/`, `bugs/`, `reports/`, `changelogs/` a `work/`, `decisions/` a `docs/decisions/` y `guidelines/` y `templates/` a `method/`, y reescribe los enlaces; con repo git en `dev/` usa `git mv`; deja copia en `dev/.backup/<fecha>-migracion-0.6.0/`). Pasar a 0.5.0 exigió esa migración (crear `COMANDOS.md` con las antiguas secciones 4, 5 y 8 de `PROJECT.md`, y reducir `PROJECT.md` y `DEV-PROFILE.md`): `dev-update` muestra el antes/después de cada archivo, espera tu aprobación y guarda una copia en `dev/.backup/`.
 
 ### Respaldos y manifiesto
 
@@ -303,7 +307,7 @@ El instalador no incluye desinstalador. Borra a mano, según lo que hayas instal
 | Adaptadores de Cursor | Borra `.cursor/rules/dev-*.mdc`. |
 | Skill de instalación | Borra `.claude/skills/dev-setup/` (o la de `~/.claude/skills/`). |
 | Hook | Quita de tu `settings.json` el bloque `SessionStart` que añadiste. |
-| Exclusiones de git | Borra las líneas que añadió el instalador a `.git/info/exclude` (`dev/`, `dev/DEV-PROFILE.md`, `dev/.backup/`, `dev/.feedback/`, los punteros y los adaptadores). |
+| Exclusiones de git | Borra las líneas que añadió el instalador a `.git/info/exclude` (`dev/`, `dev/config/DEV-PROFILE.md`, `dev/.backup/`, `dev/.feedback/`, los punteros y los adaptadores). |
 | Repo de `dev/` (modo B) | Se va con la carpeta `dev/`. |
 
 ## 12. Solución de problemas
@@ -347,4 +351,4 @@ python -I scripts/build-skill.py --check   # solo comprueba que está al día (c
 
 ## 14. Siguiente paso
 
-Revisa `dev/PROJECT.md`, `dev/COMANDOS.md` y, si quieres, `dev/DEV-PROFILE.md` siguiendo [02-configuracion.md](./02-configuracion.md) (si usaste la skill, el agente ya lo propuso contigo).
+Revisa `dev/config/PROJECT.md`, `dev/config/ENTORNO.md`, `dev/config/COMANDOS.md` y, si quieres, `dev/config/DEV-PROFILE.md` siguiendo [02-configuracion.md](./02-configuracion.md) (si usaste la skill, el agente ya lo propuso contigo).

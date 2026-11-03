@@ -3,7 +3,7 @@
 **Fecha:** 2026-03-03
 **Estado:** vigente
 **Verificado contra:** `a1b2c3d`
-**Código relacionado:** `@back/src/pendientes/main.py`, `@back/src/pendientes/models.py`
+**Código relacionado:** `@back/src/pendientes/main.py`, `@back/src/pendientes/models.py`, `@back/src/pendientes/repository.py`
 
 ## Contenido
 
@@ -18,7 +18,7 @@ La API escucha solo en `127.0.0.1:8000` ([ADR-001](../decisions/ADR-001-solo-loc
 | Método y ruta | Entrada | Respuesta | Código |
 |---|---|---|---|
 | `POST /tasks` | `{"title": "texto"}` | La tarea creada | 201 |
-| `GET /tasks` | — | Lista de tareas, de la más nueva a la más antigua | 200 |
+| `GET /tasks` | Opcionales: `status` (`pending`/`done`) y `q` (texto, sin distinguir mayúsculas ni ignorar acentos); combinados aplican los dos | Lista de tareas filtrada, de la más nueva a la más antigua | 200 |
 
 ## 2. Campos de una tarea
 
@@ -34,3 +34,4 @@ La API escucha solo en `127.0.0.1:8000` ([ADR-001](../decisions/ADR-001-solo-loc
 | Caso | Resultado |
 |---|---|
 | `title` vacío o ausente en `POST /tasks` | 422 con el detalle del campo |
+| `status` distinto de `pending` o `done` en `GET /tasks` | 422 con el detalle del parámetro |

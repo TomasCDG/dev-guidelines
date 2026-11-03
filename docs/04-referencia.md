@@ -1,6 +1,6 @@
 # Referencia
 
-**Fecha:** 27 de octubre de 2026 · **Versión del paquete:** 0.7.0
+**Fecha:** 28 de octubre de 2026 · **Versión del paquete:** 0.8.0
 
 ## Contenido
 
@@ -35,7 +35,7 @@
 | `scripts/adapters/gitignore-modo-A.txt`, `gitignore-modo-B.txt` | Reglas de exclusión de git por modo |
 | `skills/dev-setup/` | Skill de instalación (`SKILL.md`, `scripts/install.py`, `assets/`); `scripts/` y `assets/` son copia generada |
 | `skills/dev-update/` | Skill de actualización (solo `SKILL.md`); usa el instalador y `MIGRATIONS.md` de `dev-setup` |
-| `skills/dev-feedback/` | Skill de feedback del método (solo `SKILL.md`): convierte `dev/RETRO.md` en propuestas de cambio al paquete |
+| `skills/dev-feedback/` | Skill de feedback del método (solo `SKILL.md`): convierte `dev/work/RETRO.md` en propuestas de cambio al paquete |
 | `docs/` | Esta documentación para humanos (empieza por `00-quickstart.md`) |
 | `examples/mini-proyecto/` | Proyecto ficticio con una task en curso |
 | `historia/` | Memoria del porqué: `diseno.md` (problemas y decisiones de origen) y `retro-aplicadas.md` (mejoras que llegaron por retro) |
@@ -46,14 +46,16 @@
 | Ruta | Qué contiene | Quién la modifica | Se reemplaza al actualizar |
 |---|---|---|---|
 | `AGENTS.md` | Enrutador de ≤ 60 líneas: qué playbook leer en cada situación | Paquete | Sí |
-| `PROJECT.md` | Núcleo del proyecto: alias, idiomas, restricciones, zonas intocables (se lee siempre) | Tú | No |
-| `COMANDOS.md` | Stacks activos, comandos, commits y PR (se lee bajo demanda) | Tú | No |
-| `DEV-PROFILE.md` | Preferencias personales, 5 filas opcionales (no se versiona) | Tú | No |
-| `INDEX.md` | Estado vivo y catálogo de guías | El agente | No |
-| `RETRO.md` | Retros del proyecto sobre el método: una fila por task cerrada | El agente y tú | No (se crea si falta) |
+| `config/PROJECT.md` | Núcleo del proyecto: alias, idiomas, restricciones, zonas intocables (se lee siempre) | Tú | No |
+| `config/ENTORNO.md` | Herramientas y servicios del equipo por etapa, cómo probar en vivo y reglas `E…` (se lee siempre) | Tú | No |
+| `config/COMANDOS.md` | Stacks activos, comandos, commits y PR (se lee bajo demanda) | Tú | No |
+| `config/DEV-PROFILE.md` | Preferencias personales, 5 filas opcionales (no se versiona) | Tú | No |
+| `work/INDEX.md` | Estado vivo y catálogo de guías | El agente | No |
+| `work/RETRO.md` | Retros del proyecto sobre el método: una fila por task cerrada | El agente y tú | No (se crea si falta) |
 | `method/playbooks/` | 10 guías, una por situación | Paquete | Sí |
 | `method/stacks/` | Packs por tecnología | Paquete | Sí |
 | `method/templates/` | Plantillas de documentos | Paquete | Sí |
+| `method/MAPA.md` | Mapas del método (carpetas, flujo, contexto por capa, adaptador) para auditar qué lee el agente | Paquete | Sí |
 | `work/tasks/task-N-nombre/` | README, `decisions.md`, `subtask-N-*.md`, `assets/` | El agente y tú | No |
 | `work/tasks/archive/` | Tasks cerradas | El agente | No |
 | `work/bugs/bug-N-nombre/` | Igual que una task, para un bug | El agente y tú | No |
@@ -79,7 +81,7 @@ Archivo: `dev/method/playbooks/<nombre>.md`. Skill (si hay adaptador): `dev-<nom
 | [`start-session`](../dev-template/method/playbooks/start-session.md) | Retomar el trabajo: resuelve la frase, lee lo mínimo, verifica el repo | «continúa task-N», «siguiente», «bug-N», brief adjunto | — |
 | [`close-session`](../dev-template/method/playbooks/close-session.md) | Lista única de cierre; cierre y archivo de una task; retro en `RETRO.md` | Al terminar o interrumpir una subtask; al cerrar la última | — |
 | [`write-task`](../dev-template/method/playbooks/write-task.md) | Planificar una task y redactar README y briefs | Planear un desarrollo; crear o editar subtasks; cambiar estados | `task-README`, `subtask` |
-| [`write-report`](../dev-template/method/playbooks/write-report.md) | Report, changelog derivado y plan-vs-actual | Cerrar una subtask; terminar una investigación | `report`, `changelog`, `plan-vs-actual` |
+| [`write-report`](../dev-template/method/playbooks/write-report.md) | Report, changelog derivado, plan-vs-actual e informe funcional | Cerrar una subtask; terminar una investigación; informe para no técnicos | `report`, `changelog`, `plan-vs-actual`, `report-funcional` |
 | [`update-docs`](../dev-template/method/playbooks/update-docs.md) | Decidir dónde va cada conocimiento; mantener `docs/` fresco | Tocar un área documentada; cambiar comportamiento; cerrar un cambio | `docs/_page-template.md` |
 | [`fix-bug`](../dev-template/method/playbooks/fix-bug.md) | Planificar y corregir un bug con prueba que falla antes | Corregir un error en código existente | `bug-README`, `bug-subtask` |
 | [`develop-code`](../dev-template/method/playbooks/develop-code.md) | Código limpio, arquitectura, testing y stacks activos | Escribir, modificar o probar código | — |
@@ -103,6 +105,7 @@ En `dev/method/templates/`. Cada una lleva comentarios `<!-- -->` que indican qu
 | `report.md` | `work/reports/task-N-nombre/subtask-N-descripcion.md` |
 | `changelog.md` | `work/changelogs/task-N-nombre/subtask-N-descripcion.md` |
 | `plan-vs-actual.md` | `work/reports/task-N-nombre/00-plan-vs-actual.md` |
+| `report-funcional.md` | `work/reports/task-N-nombre/informe-funcional.md` |
 | `commit.md`, `pr.md` | Guías para el mensaje de commit y el informe de PR |
 
 ## 5. Estados
@@ -171,13 +174,15 @@ En `dev/method/templates/`. Cada una lleva comentarios `<!-- -->` que indican qu
 | Alias `@repo/` usados en tasks, bugs, reports, docs, decisiones y changelogs, contra `PROJECT.md` §1 | Error |
 | Alias cuya ruta no existe desde `dev/` | Aviso |
 | Estado de subtask en el README: `pendiente`, `en curso`, `hecha`, `hecha (commit <hash>)` | Error |
-| `TODO` literal en `PROJECT.md` o `COMANDOS.md` (las plantillas usan `—`) | Aviso (Error con `--strict`) |
+| `TODO` literal en `PROJECT.md`, `ENTORNO.md` o `COMANDOS.md` (las plantillas usan `—`) | Aviso (Error con `--strict`) |
+| `ENTORNO.md` de más de 50 líneas (se lee en cada sesión) | Aviso (Error con `--strict`) |
 | `TODO` literal en `DEV-PROFILE.md` | Aviso |
-| Falta `COMANDOS.md`; `PROJECT.md` con secciones anteriores a 0.5.0 (Stacks activos, Comandos del proyecto, Modelos sugeridos) | Error |
-| `dev/` con la estructura anterior a 0.6.0 (`guidelines/` o `tasks/` en la raíz y sin `method/`): el verificador se detiene tras este error | Error |
+| Falta `COMANDOS.md` o `ENTORNO.md`; `PROJECT.md` con secciones anteriores a 0.5.0 (Stacks activos, Comandos del proyecto, Modelos sugeridos) | Error |
+| `dev/` con la estructura anterior a 0.6.0 (`guidelines/` o `tasks/` en la raíz y sin `method/`) o a 0.8.0 (`PROJECT.md`, `INDEX.md`… en la raíz): el verificador se detiene tras este error | Error |
 | Tasks y bugs que no aparecen en `INDEX.md` | Aviso |
 | Reports, changelogs y docs sin fecha al inicio o largos sin índice | Aviso |
 | `RETRO.md` (si existe) con columnas distintas o un estado inválido | Aviso |
+| Playbook o archivo de `config/` que no figura en `method/MAPA.md` | Aviso |
 | Task sin `decisions.md`, falta de `.package-version` | Aviso |
 
 ## 9. Cuánto contexto se lee y cuándo
@@ -191,7 +196,7 @@ El diseño busca que el agente lea poco y solo lo necesario (divulgación progre
 | 2. Bajo demanda | Un playbook de ~15 a 80 líneas (y solo las plantillas que ese playbook enlaza) | Cuando la situación lo pide |
 | 3. Opcional | Skills, reglas y hook generados | Si instalaste adaptadores; son envoltorios que apuntan a la capa 2 |
 
-Tamaños de referencia por archivo y total al empezar: [02-configuracion.md §6](./02-configuracion.md#6-qué-se-lee-siempre-y-qué-bajo-demanda). Los playbooks miden entre 13 y 80 líneas. No se leen `work/tasks/archive/` ni reports antiguos salvo que un brief los cite.
+Tamaños de referencia por archivo y total al empezar: [02-configuracion.md §7](./02-configuracion.md#7-qué-se-lee-siempre-y-qué-bajo-demanda). Los playbooks miden entre 14 y 97 líneas. No se leen `work/tasks/archive/` ni reports antiguos salvo que un brief los cite.
 
 ## 10. Versionado y publicación
 
@@ -210,7 +215,7 @@ Para publicar: sube `release/VERSION`, añade la entrada a `release/CHANGELOG.md
 | Término | Significado |
 |---|---|
 | Task | Carpeta con el plan completo de un desarrollo |
-| Subtask | Cada markdown dentro de una task; una unidad de trabajo de una sesión |
+| Subtask | Cada markdown dentro de una task; una unidad entregable (puede ocupar varias sesiones). Por defecto, una por task |
 | Brief | El markdown de una subtask: traspaso autocontenido para un agente sin memoria |
 | Playbook | Guía de una sola situación, con frontmatter `name` y `description` |
 | Skill | Envoltorio de Claude Code que apunta a un playbook y se activa por su descripción |
@@ -233,7 +238,7 @@ Para publicar: sube `release/VERSION`, añade la entrada a `release/CHANGELOG.md
 | Changelog | Lista de cambios de código funcional, derivada del report |
 | Plan vs realidad | Informe que compara lo planeado con lo construido |
 | Frescura | «Verificado contra» y estado `vigente`/`obsoleta` de una página de docs |
-| Retro | Fila de `dev/RETRO.md` al cerrar una task: qué funcionó, qué falló y qué cambiarías del método |
+| Retro | Fila de `dev/work/RETRO.md` al cerrar una task: qué funcionó, qué falló y qué cambiarías del método |
 | Feedback | Propuestas de cambio al paquete redactadas por `dev-feedback` a partir de las retros; se guardan en `dev/.feedback/` |
 | Roadmap | `release/ROADMAP.md`: backlog de funcionalidades futuras del paquete, sin compromiso |
 | Historia | Carpeta `historia/`: el porqué del diseño y las retros ya aplicadas |

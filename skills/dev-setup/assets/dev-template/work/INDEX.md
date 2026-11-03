@@ -33,12 +33,12 @@ Elige por la columna «cuándo». Archivo: `method/playbooks/<playbook>.md`. Ski
 | `start-session` | Resuelve la frase de entrada, lee lo mínimo y verifica el repo. | «continúa task-N», «siguiente», «bug-N», brief adjunto. | `dev-start-session` |
 | `close-session` | Lista única de cierre; cierra, archiva y anota la retro de una task en `RETRO.md`. | Al terminar o interrumpir una subtask; al cerrar una task. | `dev-close-session` |
 | `write-task` | Planifica una task y redacta README y briefs de subtask. | Planificar un desarrollo; crear o editar subtasks; cambiar estados. | `dev-write-task` |
-| `write-report` | Report, changelog derivado y plan-vs-actual. | Cerrar una subtask; terminar una investigación. | `dev-write-report` |
+| `write-report` | Report, changelog derivado, plan-vs-actual e informe funcional. | Cerrar una subtask; terminar una investigación; explicar a un equipo no técnico qué se puede hacer. | `dev-write-report` |
 | `update-docs` | Dónde va cada conocimiento; páginas de docs con frescura. | Tocar un área documentada; cambiar comportamiento; cerrar un cambio. | `dev-update-docs` |
 | `fix-bug` | Brief y reglas de bugfix con prueba que falla antes. | Corregir un error en código existente. | `dev-fix-bug` |
 | `develop-code` | Código limpio, arquitectura, testing y stacks activos. | Escribir, modificar o probar código. | `dev-develop-code` |
 | `record-decision` | Decisiones por task y promoción a ADR. | Aprobar o tomar por defecto una decisión; cerrar una task. | `dev-record-decision` |
-| `commit-pr` | Mensaje de commit por subtask e informe de PR por task. | Cerrar subtask o task; pedir commit. | `dev-commit-pr` |
+| `commit-pr` | Mensaje de commit por subtask e informe de PR por task. | Cerrar una subtask o task que cambia código del proyecto; pedir commit. | `dev-commit-pr` |
 | `diagnose` | Ejecuta `check.py`, interpreta los hallazgos y propone arreglos. | «Diagnostica dev/»; al cerrar una task; tras actualizar el paquete. | `dev-diagnose` |
 
 ## 3. Tasks
@@ -59,7 +59,7 @@ Estado de task: `borrador`, `en curso`, `pausada`, `hecha (archivada)`. Estado d
 
 ## 5. Backlog
 
-Pendientes que todavía no son tasks. Docs técnicos: [docs/README.md](./docs/README.md).
+Pendientes que todavía no son tasks. Docs técnicos: [docs/README.md](../docs/README.md).
 
 | Ítem | Origen | Nota |
 |---|---|---|

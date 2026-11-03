@@ -1,6 +1,6 @@
 # Documentación de dev-guidelines
 
-**Fecha:** 27 de octubre de 2026 · **Versión del paquete:** 0.7.0
+**Fecha:** 28 de octubre de 2026 · **Versión del paquete:** 0.8.0
 
 Esta carpeta es para **personas**. La que lee el agente está en [`dev-template/`](../dev-template/) (se instala como `dev/`).
 
@@ -27,7 +27,7 @@ Un método para trabajar con agentes de código por **tasks** y **subtasks**, co
 | Actualizar a una versión nueva (skill `dev-update`) | [01-instalacion.md §10](./01-instalacion.md#10-actualizar-a-una-versión-nueva) |
 | Publicar una versión del paquete (mantenedores) | [01-instalacion.md §13](./01-instalacion.md#13-mantener-el-paquete-publicar-una-versión) |
 | Configurar mi proyecto y mi perfil | [02-configuracion.md](./02-configuracion.md) |
-| Activar skills, reglas o el hook | [02-configuracion.md §9–10](./02-configuracion.md#9-skills-y-reglas) |
+| Activar skills, reglas o el hook | [02-configuracion.md §10–11](./02-configuracion.md#10-skills-y-reglas) |
 | Empezar mi primera task | [03-uso.md §3](./03-uso.md#3-paso-1-crear-la-task) |
 | Saber qué decirle al agente | [03-uso.md §7](./03-uso.md#7-prompts-que-funcionan) |
 | Retomar un trabajo tras días | [03-uso.md §4](./03-uso.md#4-paso-2-trabajar-una-subtask) |
@@ -44,7 +44,7 @@ Un método para trabajar con agentes de código por **tasks** y **subtasks**, co
 |---|---|
 | [00-quickstart.md](./00-quickstart.md) | Guía de 5 minutos: instalar, configurar, verificar y primeros prompts |
 | [01-instalacion.md](./01-instalacion.md) | Requisitos, vía skill e `install.py`, modos A y B, opciones, adaptadores, git, actualización (`dev-update`, `--status`, `--dry-run`, respaldos), desinstalación, problemas, publicar una versión |
-| [02-configuracion.md](./02-configuracion.md) | `PROJECT.md`, `COMANDOS.md`, `DEV-PROFILE.md` y `RETRO.md` campo por campo, qué se lee siempre y qué bajo demanda, alias, stacks, commits, hook, `check.py` y `--json` |
+| [02-configuracion.md](./02-configuracion.md) | `PROJECT.md`, `ENTORNO.md`, `COMANDOS.md`, `DEV-PROFILE.md` y `RETRO.md` campo por campo, qué se lee siempre y qué bajo demanda, alias, stacks, commits, hook, `check.py` y `--json` |
 | [03-uso.md](./03-uso.md) | Ciclo de vida de una task, prompts, `INDEX.md`, decisiones, reports, bugs, paralelo, walkthrough, diagnóstico de salud, feedback del método |
 | [04-referencia.md](./04-referencia.md) | Mapa de archivos, playbooks (10), estados, convenciones, `check.py`, versionado, glosario |
 

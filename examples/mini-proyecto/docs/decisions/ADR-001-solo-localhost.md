@@ -28,6 +28,6 @@ El servicio se enlaza únicamente a `127.0.0.1`. Ninguna task puede abrirlo a ot
 
 ## Referencias
 
-- Restricción `C1` en [PROJECT.md](../../PROJECT.md).
+- Restricción `C1` en [PROJECT.md](../../config/PROJECT.md).
 - Página [docs/contracts/api-tareas.md](../contracts/api-tareas.md).
 - Código: `@back/src/pendientes/main.py`.

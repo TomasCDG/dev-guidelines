@@ -4,11 +4,12 @@
 
 ## Al empezar (léelo todo, es corto)
 
-- [PROJECT.md](./PROJECT.md): repos y alias `@repo/`, idiomas, restricciones, zonas intocables.
-- [DEV-PROFILE.md](./DEV-PROFILE.md): preferencias personales. Opcional; un campo vacío (`—`) no es un aviso: usa el valor por defecto.
-- [INDEX.md](./INDEX.md): solo «Activo ahora» (estado vivo); el catálogo de guías, si lo necesitas.
+- [PROJECT.md](./config/PROJECT.md): repos y alias `@repo/`, idiomas, restricciones, zonas intocables.
+- [ENTORNO.md](./config/ENTORNO.md): herramientas y servicios del equipo (MCP, servicios locales, cómo probar en vivo), con la etapa en que se usa cada uno.
+- [DEV-PROFILE.md](./config/DEV-PROFILE.md): preferencias personales. Opcional; un campo vacío (`—`) no es un aviso: usa el valor por defecto.
+- [INDEX.md](./work/INDEX.md): solo «Activo ahora» (estado vivo); el catálogo de guías, si lo necesitas.
 
-**Bajo demanda:** [COMANDOS.md](./COMANDOS.md) (stacks, comandos, commits y PR) solo cuando escribas o pruebes código o commitees. Si necesitas un dato vacío, pregúntalo una vez, propón un valor y anótalo en el archivo que corresponda.
+**Bajo demanda:** [COMANDOS.md](./config/COMANDOS.md) (stacks, comandos, commits y PR) solo cuando escribas o pruebes código o commitees. Si necesitas un dato vacío, pregúntalo una vez, propón un valor y anótalo en el archivo que corresponda.
 
 ## Playbooks
 
@@ -33,6 +34,8 @@ Las plantillas están en `method/templates/` y las enlaza el playbook que las us
 
 | Ruta | Contenido |
 |---|---|
+| `config/` | Configuración del proyecto: `PROJECT.md`, `ENTORNO.md`, `COMANDOS.md` y `DEV-PROFILE.md` (personal, sin versionar). |
+| `work/INDEX.md` · `work/RETRO.md` | Estado vivo del desarrollo y retro del método. |
 | `work/tasks/` · `work/bugs/` | Un plan por carpeta (`task-N-…`, `bug-N-…`); las cerradas van a `archive/`. |
 | `work/reports/` · `work/changelogs/` | Historial por task o bug. |
 | `docs/` | Verdad técnica del estado actual; sin planes ni notas de sesión. |
@@ -45,6 +48,7 @@ Las plantillas están en `method/templates/` y las enlaza el playbook que las us
 - **Docs ≠ trabajo:** planes, pendientes y reflexiones van a `work/tasks/`, `work/reports/` o `INDEX.md`, nunca a `docs/`.
 - **Un solo escritor por archivo compartido.**
 - **Pregunta solo lo necesario**, una vez, con un valor por defecto propuesto.
+- **Commits solo por código del proyecto:** sugiere un mensaje de commit solo al cerrar una subtask o task que cambia código de los repos (alias de `PROJECT.md` §1). Redactar tasks, actualizar `work/INDEX.md` o `docs/`, o instalar el paquete no genera sugerencia ni pregunta de commit.
 - **Cierra siempre** con la lista de [close-session](./method/playbooks/close-session.md).
 - No explores `work/tasks/archive/` ni `work/reports/` antiguos salvo que el brief lo cite.
 - Idioma de docs y UI: el de `PROJECT.md` §2. Explicaciones, glosarios y formato de la respuesta final: según `DEV-PROFILE.md`.

@@ -1,6 +1,6 @@
 # PROJECT — núcleo del proyecto
 
-Versionado, lo lee el agente en cada sesión. Stacks, comandos y commits: [COMANDOS.md](./COMANDOS.md). Lo personal: [DEV-PROFILE.md](./DEV-PROFILE.md). `—` = sin definir.
+Versionado, lo lee el agente en cada sesión. Herramientas y servicios por etapa: [ENTORNO.md](./ENTORNO.md). Stacks, comandos y commits: [COMANDOS.md](./COMANDOS.md). Lo personal: [DEV-PROFILE.md](./DEV-PROFILE.md). `—` = sin definir.
 
 ## 1. Repos y alias
 

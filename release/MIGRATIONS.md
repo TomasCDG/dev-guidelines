@@ -1,19 +1,20 @@
 # Migraciones entre versiones
 
-**Fecha:** 27 de octubre de 2026 · **Versión del paquete:** 0.7.0
+**Fecha:** 28 de octubre de 2026 · **Versión del paquete:** 0.8.0
 
 Guía para actualizar un `dev/` ya instalado. La usa la skill `dev-update` (copiada como `assets/MIGRATIONS.md` en `dev-setup`) para adaptar los archivos del **proyecto** que el instalador no toca. El instalador sí reemplaza solos los archivos del paquete (`AGENTS.md`, `method/`, `.tools/check.py`; hasta 0.5.0 `guidelines/` y `templates/`); aquí solo se resume qué cambia en ellos.
 
 ## Contenido
 
 1. [Cómo leer este archivo](#cómo-leer-este-archivo)
-2. [0.7.0](#070)
-3. [0.6.1](#061)
-4. [0.6.0](#060)
-5. [0.5.0](#050)
-6. [0.4.0](#040)
-7. [0.3.0](#030)
-8. [0.2.0](#020)
+2. [0.8.0](#080)
+3. [0.7.0](#070)
+4. [0.6.1](#061)
+5. [0.6.0](#060)
+6. [0.5.0](#050)
+7. [0.4.0](#040)
+8. [0.3.0](#030)
+9. [0.2.0](#020)
 
 ## Cómo leer este archivo
 
@@ -21,6 +22,43 @@ Guía para actualizar un `dev/` ya instalado. La usa la skill `dev-update` (copi
 - Cada sección tiene tres partes: archivos del paquete que se reemplazan, cambios en archivos del proyecto (tabla con acción propuesta y riesgo) y compatibilidad.
 - Riesgo **bajo**: edición mecánica y acotada; **medio**: toca estado vivo o contenido escrito por el equipo; **alto**: puede perder información si se hace mal.
 - Las acciones son propuestas: el agente las muestra y espera aprobación antes de aplicarlas. Los reports, changelogs y decisiones históricos no se reescriben salvo que la fila lo diga.
+
+## 0.8.0
+
+La raíz de `dev/` queda solo con `AGENTS.md` y carpetas: `PROJECT.md`, `COMANDOS.md` y `DEV-PROFILE.md` pasan a `config/`, e `INDEX.md` y `RETRO.md` a `work/`. **Hay que migrar antes de actualizar**: con los archivos en la raíz, `install.py` no reemplaza nada y `check.py` da error («estructura anterior a 0.8.0»).
+
+### Archivos del paquete que se reemplazan
+
+- `AGENTS.md`: enlaces a `config/` y `work/`; la tabla «Estructura» gana las filas `config/` y `work/INDEX.md · work/RETRO.md`.
+- `method/README.md` y los playbooks `start-session`, `close-session`, `commit-pr`, `develop-code` y `fix-bug`: enlaces a las rutas nuevas.
+- `config/ENTORNO.md`: `AGENTS.md` y `start-session` lo leen al empezar; `write-task`, las plantillas `subtask` y `bug-subtask`, `develop-code` y `update-docs` lo usan. `check.py` da error si falta (el instalador lo crea al actualizar) y avisa si pasa de 50 líneas.
+- `method/MAPA.md` (nuevo): mapas del método para personas; `check.py` avisa si un playbook o un archivo de `config/` no figura en él.
+- `method/stacks/typescript-react.md` pierde «Notas para quien no conoce React»; esa regla, general para cualquier stack, pasa a `develop-code` §4.
+- Commits solo por código del proyecto: nueva regla innegociable en `AGENTS.md`; `commit-pr` y el punto 8 de `close-session` dicen que redactar tasks, actualizar archivos de `dev/` o instalar el paquete no generan sugerencia ni pregunta de commit.
+- Menos subtasks: `write-task` §5 «Cuándo dividir» (una subtask por defecto, cortes D1–D5, columna «Corte»), plantillas `task-README` y `subtask`, `develop-code`, `fix-bug` y `start-session`. `check.py` avisa (nunca error) si una subtask tras la primera no cita su corte o si una task tiene más de 3 sin «Por qué N». Nuevo corte D6 (stack distinto), regla «sin goteo» y chequeo de fusión antes de aprobar.
+- `write-report` §5 y plantilla `report-funcional.md` (nueva): informe funcional para lectores no técnicos.
+- `write-task` §4 y plantilla `subtask`: los valores de referencia de las pruebas se recalculan contra la fuente y se anota cómo se obtuvieron.
+- `.tools/check.py`: busca los archivos en `config/` y `work/`, exige la carpeta `config/` y se detiene con error si quedan archivos del proyecto en la raíz de `dev/`.
+- Hook `session-start.py`: detecta `dev/` por `dev/AGENTS.md`, lee `dev/work/INDEX.md` y avisa si `dev/` no está migrado.
+- Exclusiones de git: `dev/config/DEV-PROFILE.md` (modo A, `.git/info/exclude`) y `config/DEV-PROFILE.md` (modo B, `dev/.gitignore`). El instalador las añade en la actualización.
+
+### Cambios en archivos del proyecto (que el instalador NO toca) y cómo adaptarlos
+
+| Orden | Archivo | Cambio | Acción propuesta | Riesgo |
+|---|---|---|---|---|
+| 1 | `dev/PROJECT.md`, `dev/COMANDOS.md`, `dev/DEV-PROFILE.md`, `dev/INDEX.md`, `dev/RETRO.md` | Cambian de carpeta. | `migrate.py --dry-run` y, con aprobación, `migrate.py` (paso 4 de `dev-update`): mueve los cinco archivos (`git mv` si `dev/` es un repo git; `DEV-PROFILE.md`, que no se versiona, se mueve sin git), reescribe los enlaces Markdown relativos de los archivos del proyecto que apuntan a ellos o salen de ellos y deja copia en `dev/.backup/<fecha>-migracion-0.8.0/`. Después, `install.py --yes`. | medio |
+| 2 | Textos del proyecto (`work/INDEX.md`, briefs, reports, `docs/`) | Las rutas citadas en prosa o entre acentos graves (`dev/INDEX.md`, `` `PROJECT.md` §3 ``) no se reescriben. Los nombres sueltos (`PROJECT.md` §3) siguen siendo válidos. | Opcional: buscar `dev/PROJECT.md`, `dev/INDEX.md`… y cambiarlos por `dev/config/…` y `dev/work/…`. | bajo |
+| 3 | `dev/.gitignore` (modo B) | La línea `DEV-PROFILE.md` sigue valiendo (sin `/`, coincide en cualquier carpeta); el instalador añade `config/DEV-PROFILE.md`. | Opcional: borrar la línea antigua. | bajo |
+| 4 | Repo git de `dev/` (modo B con `--git-init`) | Los movimientos quedan sin commitear. | El desarrollador decide cuándo commitearlos; el agente no lo propone. | bajo |
+| 5 | `dev/work/INDEX.md` (catálogo) | La columna «Cuándo usarla» de `commit-pr` decía «Cerrar subtask o task; pedir commit». | Opcional: cambiarla por «Cerrar una subtask o task que cambia código del proyecto; pedir commit». | bajo |
+| 6 | `dev/config/ENTORNO.md` | Archivo nuevo del proyecto; lo crea el instalador vacío (`—`). | Con aprobación, rellenarlo: las herramientas y servicios que hoy estén en «Particularidades del entorno» de `DEV-PROFILE.md`, en páginas de `docs/runbook/` o repetidos en los briefs, si son comunes al equipo (lo de una sola máquina se queda en `DEV-PROFILE.md`). Proponer cada fila con su etapa. Incluye la fila «Script de pruebas» de §2 (copiarla de la plantilla si el archivo ya existía). | medio |
+| 7 | `dev/config/DEV-PROFILE.md` y `dev/config/COMANDOS.md` | La fila «Particularidades del entorno» pasa a llamarse «Particularidades de tu máquina»; `COMANDOS.md` §2 ya no manda lo de una máquina a `docs/`. | Opcional: copiar los textos nuevos de la plantilla. | bajo |
+| 8 | READMEs de tasks en curso (`dev/work/tasks/*/README.md`) | Las tasks ya planificadas siguen siendo válidas; sin columna «Corte», `check.py` no avisa. | Opcional: en una task con subtasks `pendiente`, revisar si se pueden fusionar según `write-task` §5. No tocar las tasks archivadas. | bajo |
+
+### Compatibilidad
+
+- Rompe con 0.7.x: un `dev/` sin migrar da error en `check.py` y el instalador no lo actualiza hasta migrar. `migrate.py` aplica en una sola pasada las migraciones pendientes, así que desde 0.5.0 también se llega directo a 0.8.0.
+- El hook ya instalado sigue funcionando (su ruta, `dev/.adapters/session-start.py`, no cambia; el instalador lo regenera).
 
 ## 0.7.0
 

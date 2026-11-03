@@ -1,6 +1,6 @@
 # PROJECT — núcleo del proyecto
 
-Versionado, lo lee el agente en cada sesión. Stacks, comandos y commits: [COMANDOS.md](./COMANDOS.md). Lo personal: [DEV-PROFILE.md](./DEV-PROFILE.md). `—` = sin definir.
+Versionado, lo lee el agente en cada sesión. Herramientas y servicios por etapa: [ENTORNO.md](./ENTORNO.md). Stacks, comandos y commits: [COMANDOS.md](./COMANDOS.md). Lo personal: [DEV-PROFILE.md](./DEV-PROFILE.md). `—` = sin definir.
 
 ## 1. Repos y alias
 
@@ -27,7 +27,7 @@ Valen para toda task; se citan por ID (`C1`…).
 
 | ID | Restricción |
 |---|---|
-| C1 | La API solo escucha en `127.0.0.1` (ver [ADR-001](./docs/decisions/ADR-001-solo-localhost.md)) |
+| C1 | La API solo escucha en `127.0.0.1` (ver [ADR-001](../docs/decisions/ADR-001-solo-localhost.md)) |
 | C2 | Sin dependencias nuevas sin aprobación del desarrollador |
 | C3 | Los cambios de la API son aditivos: no se quitan ni renombran campos publicados |
 

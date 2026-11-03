@@ -1,6 +1,6 @@
 # RETRO — mejoras al método
 
-Retro de este proyecto: al cerrar una task se añade una fila `pendiente` ([close-session](./method/playbooks/close-session.md) §3). Cuando haya varias, pide «feedback del método» (skill `dev-feedback`) para convertirlas en propuestas de cambio al paquete. Es un archivo del proyecto: el instalador nunca lo pisa.
+Retro de este proyecto: al cerrar una task se añade una fila `pendiente` ([close-session](../method/playbooks/close-session.md) §3). Cuando haya varias, pide «feedback del método» (skill `dev-feedback`) para convertirlas en propuestas de cambio al paquete. Es un archivo del proyecto: el instalador nunca lo pisa.
 
 Estados: `pendiente` (sin procesar), `propuesta` (feedback ya redactado en `.feedback/`), `enviada` (el desarrollador la llevó al paquete), `descartada` (añade el motivo en «Qué cambiarías»).
 

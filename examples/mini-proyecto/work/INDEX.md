@@ -16,11 +16,11 @@ Tablero mantenido por el agente. **No sustituye a la verificación del repo real
 
 | Campo | Valor |
 |---|---|
-| Task o bug en curso | [task-1-listado-tareas](./work/tasks/task-1-listado-tareas/README.md) |
-| Siguiente subtask | [subtask-2-filtros](./work/tasks/task-1-listado-tareas/subtask-2-filtros.md) (en curso) |
+| Task o bug en curso | [task-1-listado-tareas](./tasks/task-1-listado-tareas/README.md) |
+| Siguiente subtask | [subtask-2-ui-lista](./tasks/task-1-listado-tareas/subtask-2-ui-lista.md) (en curso) |
 | Rama y repos | `feat/listado-tareas` (en `back/` y `front/`) |
-| Última sesión (fecha y resumen) | 2026-03-04 · subtask 2 iniciada: filtro por estado hecho en la API; falta filtro por texto |
-| Pendiente al reanudar | Filtro por texto en `repository.py`; ampliar pruebas; decidir el manejo de acentos (valor por defecto: no normalizar) |
+| Última sesión (fecha y resumen) | 2026-03-04 · subtask 2 iniciada: la lista se ve en el navegador; faltan formulario y filtros |
+| Pendiente al reanudar | Formulario de alta y controles de filtro en `@front`; mensaje con la API caída; diseño visual (valor por defecto: tabla simple) |
 
 ## 2. Catálogo de guías
 
@@ -31,7 +31,7 @@ Elige por la columna «cuándo». Archivo: `method/playbooks/<playbook>.md`. Ski
 | `start-session` | Resuelve la frase de entrada, lee lo mínimo y verifica el repo. | «continúa task-N», «siguiente», «bug-N», brief adjunto. | `dev-start-session` |
 | `close-session` | Lista única de cierre; cierra, archiva y anota la retro de una task en `RETRO.md`. | Al terminar o interrumpir una subtask; al cerrar una task. | `dev-close-session` |
 | `write-task` | Planifica una task y redacta README y briefs de subtask. | Planificar un desarrollo; crear o editar subtasks; cambiar estados. | `dev-write-task` |
-| `write-report` | Report, changelog derivado y plan-vs-actual. | Cerrar una subtask; terminar una investigación. | `dev-write-report` |
+| `write-report` | Report, changelog derivado, plan-vs-actual e informe funcional. | Cerrar una subtask; terminar una investigación; explicar a un equipo no técnico qué se puede hacer. | `dev-write-report` |
 | `update-docs` | Dónde va cada conocimiento; páginas de docs con frescura. | Tocar un área documentada; cambiar comportamiento; cerrar un cambio. | `dev-update-docs` |
 | `fix-bug` | Brief y reglas de bugfix con prueba que falla antes. | Corregir un error en código existente. | `dev-fix-bug` |
 | `develop-code` | Código limpio, arquitectura, testing y stacks activos. | Escribir, modificar o probar código. | `dev-develop-code` |
@@ -43,7 +43,7 @@ Elige por la columna «cuándo». Archivo: `method/playbooks/<playbook>.md`. Ski
 
 | Task | Estado | Subtasks hechas / total | Último report | Siguiente paso | Retro pendiente |
 |---|---|---|---|---|---|
-| [task-1-listado-tareas](./work/tasks/task-1-listado-tareas/README.md) | en curso | 1 / 3 | [subtask 1](./work/reports/task-1-listado-tareas/subtask-1-api-crud.md) y [parcial de la 2](./work/reports/task-1-listado-tareas/subtask-2-filtros.md) | Terminar el filtro por texto (subtask 2) | no |
+| [task-1-listado-tareas](./tasks/task-1-listado-tareas/README.md) | en curso | 1 / 2 | [subtask 1](./reports/task-1-listado-tareas/subtask-1-api.md) y [parcial de la 2](./reports/task-1-listado-tareas/subtask-2-ui-lista.md) | Formulario y filtros en la UI (subtask 2) | no |
 
 ## 4. Bugs
 
@@ -57,4 +57,4 @@ Elige por la columna «cuándo». Archivo: `method/playbooks/<playbook>.md`. Ski
 |---|---|---|
 | Etiquetas por tarea | Conversación con el desarrollador, 2026-03-01 | Fuera de la task 1; se redacta cuando se cierre. |
 
-Docs técnicos: [docs/README.md](./docs/README.md).
+Docs técnicos: [docs/README.md](../docs/README.md).

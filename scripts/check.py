@@ -5,7 +5,7 @@ Uso:
 
 --json: imprime el resultado como JSON ({root, errors, warnings, counts}) en lugar de texto.
 Sin argumento busca ./dev y, si no existe, usa el directorio actual si contiene AGENTS.md.
---strict: los TODO literales de PROJECT.md/COMANDOS.md y los excesos de presupuesto de tokens pasan de aviso a error.
+--strict: los TODO literales de config/PROJECT.md y config/COMANDOS.md y los excesos de presupuesto de tokens pasan de aviso a error.
 Código de salida: 0 sin errores (puede haber advertencias), 1 con errores, 2 uso incorrecto.
 Solo usa la biblioteca estándar.
 """
@@ -17,16 +17,26 @@ import re
 import sys
 from pathlib import Path
 
+PROJECT = "config/PROJECT.md"
+COMANDOS = "config/COMANDOS.md"
+ENTORNO = "config/ENTORNO.md"
+DEV_PROFILE = "config/DEV-PROFILE.md"
+INDEX = "work/INDEX.md"
+RETRO = "work/RETRO.md"
+MAPA = "method/MAPA.md"
 REQUIRED_FILES = [
     "AGENTS.md",
-    "PROJECT.md",
-    "INDEX.md",
+    PROJECT,
+    INDEX,
     "docs/README.md",
 ]
 # Archivos que el instalador crea pero que una instalación anterior a 0.5.0 no tiene: mensaje propio.
 MIGRATED_FILES = {
-    "COMANDOS.md": "falta COMANDOS.md (stacks, comandos y commits, desde 0.5.0): actualiza con dev-update",
+    COMANDOS: "falta COMANDOS.md (stacks, comandos y commits, desde 0.5.0): actualiza con dev-update",
+    ENTORNO: "falta ENTORNO.md (herramientas y entorno, desde 0.8.0): actualiza con dev-update para crearlo",
 }
+# Archivos del proyecto que hasta 0.7.x vivían en la raíz de dev/ (0.8.0 los pasa a config/ y work/).
+ROOT_FILES_070 = ("PROJECT.md", "COMANDOS.md", "DEV-PROFILE.md", "INDEX.md", "RETRO.md")
 REQUIRED_PLAYBOOKS = (
     "start-session",
     "close-session",
@@ -40,19 +50,22 @@ REQUIRED_PLAYBOOKS = (
     "diagnose",
 )
 AGENTS_MAX_LINES = 60
+ENTORNO_MAX_LINES = 50
 PLAYBOOK_MAX_LINES = 120
 PLAYBOOK_TOC_LINES = 100
 DESCRIPTION_MAX = 300
 RETRO_COLUMNS = ("fecha", "task o bug", "qué funcionó", "qué falló o sobró", "qué cambiarías", "estado")
 RETRO_STATES = ("pendiente", "propuesta", "enviada", "descartada")
 GENERATED_MARKER = "dev-guidelines:generated"
-REQUIRED_DIRS = ["work", "work/tasks", "work/bugs", "work/reports", "work/changelogs", "docs", "docs/decisions", "method", "method/playbooks", "method/templates"]
+REQUIRED_DIRS = ["config", "work", "work/tasks", "work/bugs", "work/reports", "work/changelogs", "docs", "docs/decisions", "method", "method/playbooks", "method/templates"]
 SUBTASK_STATES = ("pendiente", "en curso", "hecha")
+MAX_SUBTASKS = 3  # más subtasks exigen un párrafo «Por qué N» en el README (write-task §5)
 SKIP_LINK_DIRS = {"method/templates"}
 SKIP_LINK_FILES = {"docs/_page-template.md"}
 ALIAS_SCAN_DIRS = ("work", "docs")
 DATED_DIRS = ("work/reports", "work/changelogs", "docs")
 OLD_STRUCTURE_MSG = "estructura anterior a 0.6.0 (guidelines/, templates/, tasks/… en la raíz de dev/): migra con dev-update"
+ROOT_FILES_MSG = "estructura anterior a 0.8.0 ({files} en la raíz de dev/; ahora van en config/ y work/): migra con dev-update"
 FENCE_RE = re.compile(r"^(```|~~~)")
 LINK_RE = re.compile(r"(?<!\!)\[[^\]]*\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
 ALIAS_RE = re.compile(r"(?<![\w@.\-/])@([a-z][\w\-]*)/")
@@ -110,13 +123,20 @@ def md_files(root: Path) -> list[Path]:
 
 
 def old_structure(root: Path) -> bool:
-    """Árbol anterior a 0.6.0: guidelines/ o tasks/ en la raíz de dev/ y sin method/."""
-    return ((root / "guidelines").exists() or (root / "tasks").exists()) and not (root / "method").exists()
+    """Árbol anterior a 0.6.0 (guidelines/ o tasks/ en la raíz de dev/ y sin method/) o a 0.8.0 (archivos del
+    proyecto en la raíz de dev/)."""
+    pre_060 = ((root / "guidelines").exists() or (root / "tasks").exists()) and not (root / "method").exists()
+    return pre_060 or bool(root_files_070(root))
+
+
+def root_files_070(root: Path) -> list[str]:
+    return [name for name in ROOT_FILES_070 if (root / name).is_file()]
 
 
 def check_structure(root: Path, rep: Report) -> None:
     if old_structure(root):
-        rep.error("dev/", OLD_STRUCTURE_MSG)
+        stray = root_files_070(root)
+        rep.error("dev/", ROOT_FILES_MSG.format(files=", ".join(stray)) if stray and (root / "method").exists() else OLD_STRUCTURE_MSG)
         return
     for rel in REQUIRED_FILES:
         if not (root / rel).is_file():
@@ -124,19 +144,19 @@ def check_structure(root: Path, rep: Report) -> None:
     for rel, msg in MIGRATED_FILES.items():
         if not (root / rel).is_file():
             rep.error(rel, msg)
-    project = root / "PROJECT.md"
+    project = root / PROJECT
     if project.is_file():
         old = [m.group(2) for _, line in strip_fences(project.read_text(encoding="utf-8")) if (m := HEADING_RE.match(line))
                and re.search(r"stacks activos|comandos del proyecto|modelos sugeridos", m.group(2), re.I)]
         if old:
-            rep.error("PROJECT.md", f"formato anterior a 0.5.0 (secciones «{old[0]}»…): migra con dev-update; stacks, comandos y commits pasan a COMANDOS.md")
+            rep.error(PROJECT, f"formato anterior a 0.5.0 (secciones «{old[0]}»…): migra con dev-update; stacks, comandos y commits pasan a COMANDOS.md")
     for rel in REQUIRED_DIRS:
         if not (root / rel).is_dir():
             rep.error(rel + "/", "falta la carpeta")
     if (root / "work" / "tasks").is_dir() and not (root / "work" / "tasks" / "archive").is_dir():
         rep.warn("work/tasks/archive/", "falta la carpeta de tasks cerradas")
-    if not (root / "DEV-PROFILE.md").is_file():
-        rep.warn("DEV-PROFILE.md", "no existe (es opcional): el agente usará valores por defecto")
+    if not (root / DEV_PROFILE).is_file():
+        rep.warn(DEV_PROFILE, "no existe (es opcional): el agente usará valores por defecto")
     if not (root / ".package-version").is_file():
         rep.warn(".package-version", "no existe (instalación manual)")
 
@@ -180,7 +200,7 @@ def check_numbering(root: Path, rep: Report) -> None:
 
 
 def check_index(root: Path, rep: Report) -> None:
-    index = root / "INDEX.md"
+    index = root / INDEX
     if not index.is_file():
         return
     text = index.read_text(encoding="utf-8")
@@ -193,11 +213,11 @@ def check_index(root: Path, rep: Report) -> None:
             m = re.match(rf"^({prefix}-\d+)-", d.name)
             if m and m.group(1) not in warned and not re.search(rf"(?<![\w-]){m.group(1)}(?![\w]|-\d)", text):
                 warned.add(m.group(1))
-                rep.warn("INDEX.md", f"{m.group(1)} existe en {folder}/ pero no aparece en el índice")
+                rep.warn(INDEX, f"{m.group(1)} existe en {folder}/ pero no aparece en el índice")
 
 
 def parse_aliases(root: Path, rep: Report) -> dict[str, str]:
-    project = root / "PROJECT.md"
+    project = root / PROJECT
     aliases: dict[str, str] = {}
     if not project.is_file():
         return aliases
@@ -212,12 +232,12 @@ def parse_aliases(root: Path, rep: Report) -> dict[str, str]:
             if len(cells) >= 2 and cells[0].startswith("@") and len(cells[0]) > 1:
                 aliases[cells[0][1:]] = cells[1]
     if not aliases:
-        rep.error("PROJECT.md", "§1 no declara ningún alias @repo")
+        rep.error(PROJECT, "§1 no declara ningún alias @repo")
     for name, rel in aliases.items():
         if rel.upper() == "TODO" or rel in ("", "—", "-"):
             continue
         if not (root / rel).resolve().exists():
-            rep.warn("PROJECT.md", f"el alias @{name} apunta a '{rel}', que no existe desde dev/")
+            rep.warn(PROJECT, f"el alias @{name} apunta a '{rel}', que no existe desde dev/")
     return aliases
 
 
@@ -267,20 +287,33 @@ def check_subtask_states(root: Path, rep: Report) -> None:
             continue
         for readme in sorted(list(base.glob("*/README.md")) + list(base.glob("archive/*/README.md"))):
             rel = readme.relative_to(root).as_posix()
-            for n, line in strip_fences(readme.read_text(encoding="utf-8")):
-                if not line.startswith("|") or "subtask-" not in line:
+            text = readme.read_text(encoding="utf-8")
+            cut_col: int | None = None
+            rows = 0
+            for n, line in strip_fences(text):
+                if not line.startswith("|"):
                     continue
                 cells = [c.strip() for c in line.strip().strip("|").split("|")]
+                if "subtask-" not in line:
+                    lowered = [c.lower() for c in cells]
+                    if "subtask" in lowered:
+                        cut_col = lowered.index("corte") if "corte" in lowered else None
+                    continue
                 state = cells[-1].strip("`*_ ").lower()
                 if state.startswith("<!--"):
                     continue
+                rows += 1
                 if not any(state == s or state.startswith(s + " (") for s in SUBTASK_STATES):
                     rep.error(f"{rel}:{n}", f"estado de subtask inválido: '{cells[-1]}'")
+                if rows > 1 and cut_col is not None and cut_col < len(cells) and cells[cut_col].strip("`*_ ") in ("", "—", "-"):
+                    rep.warn(f"{rel}:{n}", "subtask sin criterio de corte (D1–D6, write-task §5)")
+            if rows > MAX_SUBTASKS and "por qué" not in text.lower():
+                rep.warn(rel, f"{rows} subtasks sin párrafo «Por qué N» (write-task §5)")
 
 
 def check_retro(root: Path, rep: Report) -> None:
     """Comprobación suave de RETRO.md (aviso, nunca error): columnas esperadas y estados válidos."""
-    path = root / "RETRO.md"
+    path = root / RETRO
     if not path.is_file():
         return
     header: list[str] | None = None
@@ -291,7 +324,7 @@ def check_retro(root: Path, rep: Report) -> None:
         if header is None:
             header = [c.lower() for c in cells]
             if tuple(header) != RETRO_COLUMNS:
-                rep.warn(f"RETRO.md:{n}", "columnas distintas de: " + " | ".join(RETRO_COLUMNS))
+                rep.warn(f"{RETRO}:{n}", "columnas distintas de: " + " | ".join(RETRO_COLUMNS))
                 return
             continue
         if all(set(c) <= set("-: ") for c in cells):
@@ -299,14 +332,15 @@ def check_retro(root: Path, rep: Report) -> None:
         state = cells[-1].strip("`*_ ").lower()
         if state in ("", "—", "-") or any(state == s or state.startswith(s + " (") for s in RETRO_STATES):
             continue
-        rep.warn(f"RETRO.md:{n}", f"estado de retro inválido: '{cells[-1]}' (usa {', '.join(RETRO_STATES)})")
+        rep.warn(f"{RETRO}:{n}", f"estado de retro inválido: '{cells[-1]}' (usa {', '.join(RETRO_STATES)})")
     if header is None:
-        rep.warn("RETRO.md", "sin tabla de entradas")
+        rep.warn(RETRO, "sin tabla de entradas")
 
 
 def check_todos(root: Path, rep: Report, strict: bool = False) -> None:
     """Avisa de `TODO` literales (las plantillas usan `—` para «sin definir», no TODO)."""
-    for name, severity in (("PROJECT.md", "error" if strict else "warn"), ("COMANDOS.md", "error" if strict else "warn"), ("DEV-PROFILE.md", "warn")):
+    for name, severity in ((PROJECT, "error" if strict else "warn"), (ENTORNO, "error" if strict else "warn"),
+                           (COMANDOS, "error" if strict else "warn"), (DEV_PROFILE, "warn")):
         path = root / name
         if not path.is_file():
             continue
@@ -380,6 +414,11 @@ def check_budget(root: Path, rep: Report, strict: bool) -> None:
         n = len(agents.read_text(encoding="utf-8").splitlines())
         if n > AGENTS_MAX_LINES:
             budget(rep, strict, "AGENTS.md", f"{n} líneas (máximo {AGENTS_MAX_LINES}): debe ser un enrutador corto")
+    entorno = root / ENTORNO
+    if entorno.is_file():
+        n = len(entorno.read_text(encoding="utf-8").splitlines())
+        if n > ENTORNO_MAX_LINES:
+            budget(rep, strict, ENTORNO, f"{n} líneas (máximo {ENTORNO_MAX_LINES}): se lee en cada sesión, resume una fila por herramienta")
     pb = root / "method" / "playbooks"
     if not pb.is_dir():
         return
@@ -426,7 +465,7 @@ def check_archive(root: Path, rep: Report) -> None:
         f = root / rel
         if f.is_file():
             texts.append((rel, f.read_text(encoding="utf-8")))
-    index = root / "INDEX.md"
+    index = root / INDEX
     if index.is_file():
         active: list[str] = []
         grab = False
@@ -435,7 +474,7 @@ def check_archive(root: Path, rep: Report) -> None:
                 grab = "activo ahora" in line.lower()
             elif grab:
                 active.append(line)
-        texts.append(("INDEX.md (Activo ahora)", "\n".join(active)))
+        texts.append((f"{INDEX} (Activo ahora)", "\n".join(active)))
     for where, text in texts:
         if re.search(r"\]\([^)]*(tasks|bugs)/archive/", text):
             rep.warn(where, "enlaza a archive/: el inicio de sesión no debe leer tasks cerradas")
@@ -455,6 +494,20 @@ def check_archive(root: Path, rep: Report) -> None:
             pending = [x for x in states if not x.startswith("hecha")]
             if pending:
                 rep.warn(readme.relative_to(root).as_posix(), f"task archivada con {len(pending)} subtasks no hechas")
+
+
+def check_map(root: Path, rep: Report) -> None:
+    """method/MAPA.md debe nombrar cada playbook y cada archivo de config/ (aviso, nunca error)."""
+    path = root / MAPA
+    if not path.is_file():
+        rep.warn(MAPA, "no existe: actualiza con dev-update")
+        return
+    text = path.read_text(encoding="utf-8")
+    names = [f"`{p.stem}`" for p in sorted((root / "method" / "playbooks").glob("*.md"))]
+    names += [f"config/{p.name}" for p in sorted((root / "config").glob("*.md"))]
+    missing = [n.strip("`") for n in names if n not in text and n.strip("`") not in text]
+    if missing:
+        rep.warn(MAPA, f"no menciona {', '.join(missing)}: el mapa está desactualizado")
 
 
 def check_dates_and_index(root: Path, rep: Report) -> None:
@@ -511,6 +564,7 @@ def main(argv: list[str]) -> int:
     check_archive(root, rep)
     check_dates_and_index(root, rep)
     check_retro(root, rep)
+    check_map(root, rep)
     return finish(root, rep, argv)
 
 

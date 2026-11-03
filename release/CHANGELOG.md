@@ -2,6 +2,38 @@
 
 Versión instalada en un proyecto: `dev/.package-version`.
 
+## 0.8.0 — 2026-10-28
+
+Raíz de `dev/` ordenada. Motivo: al instalar, la raíz mezclaba el enrutador, la configuración y el estado del trabajo en seis archivos sueltos, y no se veía de un vistazo qué era cada uno. Ahora en la raíz solo queda `AGENTS.md`, y cada archivo está en la carpeta de su función.
+
+### Cambiado
+
+- `dev/config/`: `PROJECT.md`, `COMANDOS.md` y `DEV-PROFILE.md` (antes en la raíz de `dev/`).
+- `dev/work/`: `INDEX.md` y `RETRO.md`, junto a `tasks/`, `bugs/`, `reports/` y `changelogs/`.
+- `AGENTS.md`, `method/README.md` y los playbooks enlazan a las rutas nuevas; la tabla «Estructura» de `AGENTS.md` describe `config/` y `work/`.
+- `migrate.py` encadena migraciones (0.6.0 y 0.8.0) y aplica las pendientes en una sola pasada; el conflicto se detecta por movimiento (destino con contenido).
+- `install.py` no actualiza un `dev/` con archivos del proyecto en la raíz (pide migrar), y crea `config/` y `work/` si faltan.
+- `check.py` busca los archivos en `config/` y `work/`, exige `config/` y da error si `dev/` no está migrado.
+- Hook `session-start.py`: detecta `dev/` por `AGENTS.md`, lee `work/INDEX.md` y avisa si falta migrar.
+- Exclusiones de git del perfil personal: `dev/config/DEV-PROFILE.md` (modo A) y `config/DEV-PROFILE.md` (modo B).
+- `examples/mini-proyecto/`, las skills, `README.md` y `docs/` usan la estructura nueva.
+- Packs de `stacks/` solo con reglas técnicas (retro de stacks): se quita «Notas para quien no conoce React» de `typescript-react.md`; la regla de explicar en lenguaje sencillo según «Tecnologías que NO conozco» pasa a `develop-code` §4 y vale para cualquier stack. `python.md` y `swift.md` no cambian.
+- Commits solo por código del proyecto (retro task-33): `AGENTS.md` (regla innegociable), `commit-pr` y `close-session` (punto 8) dejan claro que el mensaje de commit se sugiere solo al cerrar una subtask o task que cambia código de los repos; redactar tasks, actualizar `INDEX.md`, `RETRO.md` o `docs/`, o instalar el paquete no generan sugerencia ni pregunta de commit. En modo B, el commit de `dev/` lo decide el desarrollador.
+- Menos subtasks (cada una cuesta unos 12 000 tokens entre brief, report, changelog y cierre): `write-task` §5 «Cuándo dividir» fija **una subtask por defecto** y solo corta con un criterio D1–D5 (tamaño, entregas independientes, aprobación a mitad, riesgo, investigación); capas, pruebas, docs y paralelismo no justifican un corte. Subtasks = cortes + 1; con más de 3, párrafo «Por qué N». Una subtask larga sigue en otra sesión con report parcial. La plantilla `task-README` gana la columna «Corte» y un diagrama de 2 nodos; `subtask`, `develop-code` (la matriz completa de pruebas va en la misma subtask), `fix-bug` y `start-session` dejan de suponer varias. `check.py` avisa si una subtask después de la primera no cita su corte o si hay más de 3 sin «Por qué N». El ejemplo pasa a 2 subtasks (API completa y UI, corte D2) y `docs/03-uso.md` deja de pedir «propón subtasks».
+- Mínimo de subtasks sin comprometer los demás criterios (retro de proyecto): `write-task` §5 gana el principio explícito, el corte **D6 «Stack distinto»** (packs distintos de `stacks/`; las capas de un mismo stack siguen sin contar), la regla «sin goteo» (cambios chicos y parecidos en una subtask con tabla de ítems) y un chequeo de fusión antes de pedir aprobación, con el costo estimado en tokens. Plantilla `task-README` y `check.py` citan D1–D6.
+- Valores de referencia recalculados (retro task-34): `write-task` §4 (criterios de aceptación) pide recalcular cada cifra esperada contra la fuente y anotar cómo se obtuvo; la plantilla `subtask` gana la tabla «Valor de referencia». `ENTORNO.md` §2 gana la fila «Script de pruebas» para el script del proyecto que ejecuta preguntas contra el servicio en vivo (el paquete no trae uno: depende de cada proyecto).
+
+### Añadido
+
+- `dev/config/ENTORNO.md` (retro de instalación en modo B): herramientas y servicios del equipo (MCP, servicios locales con su URL), en qué etapa de la task se usa cada uno, cómo probar en vivo y reglas de uso `E…`. Versionado y leído en cada sesión, porque sirve en todas las etapas y no solo al programar. `AGENTS.md` y `start-session` lo leen al empezar; `write-task` lo usa al investigar y copia en el «Trabajo» de cada brief las herramientas de sus etapas (las plantillas `subtask` y `bug-subtask` ganan la línea «Herramientas»). `dev-setup` lo propone al instalar. `check.py` da error si falta, avisa si pasa de 50 líneas (error con `--strict`) y cuenta sus `TODO`.
+- `method/MAPA.md` (retro de transparencia): cuatro mapas con su paso a paso y fecha (carpetas y archivos con su rol y quién los escribe; flujo frase → playbook → entregables → cierre; qué contexto se lee siempre, bajo demanda y qué lo dispara, con tokens aproximados; skills, reglas, agente y hook de Claude Code). Va en `method/` y no en `docs/` para que el paquete lo mantenga al día. `check.py` avisa si un playbook o un archivo de `config/` no figura en el mapa.
+- Informe funcional (retro task-34): `write-report` §5 y plantilla `report-funcional.md` para lectores no técnicos: matriz «Qué se puede hacer» con ✅ ⚠️ ❌ — (✅ solo lo probado), tabla «Cómo probarlo» con número esperado recalculado, límites, máximo 4 decisiones autocontenidas y lo técnico solo en «Para tener a mano».
+- `COMANDOS.md` §2 remite a `ENTORNO.md` en vez de a `docs/`; la fila de `DEV-PROFILE.md` pasa a «Particularidades de tu máquina», y `update-docs` y `develop-code` apuntan a `ENTORNO.md`.
+
+### Migración
+
+Obligatoria: `migrate.py` antes de `install.py` (sección 0.8.0 de `MIGRATIONS.md`; `dev-update` lo guía).
+
 ## 0.7.0 — 2026-10-27
 
 Feedback del método desde cada proyecto. Motivo: la retro vivía en el paquete, pero quienes la escriben son los proyectos instalados, que no tienen acceso a él; ahora cada `dev/` guarda sus retros y una skill las convierte en propuestas de cambio al paquete.

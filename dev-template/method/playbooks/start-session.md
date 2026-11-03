@@ -19,13 +19,13 @@ Objetivo: que una frase baste para retomar sin re-explicar el estado. El estado 
 
 ## 2. Qué leer (en este orden, y no más)
 
-1. `AGENTS.md`, [PROJECT.md](../../PROJECT.md) (núcleo) y [DEV-PROFILE.md](../../DEV-PROFILE.md).
+1. `AGENTS.md`, [PROJECT.md](../../config/PROJECT.md) (núcleo), [ENTORNO.md](../../config/ENTORNO.md) (herramientas por etapa: úsalas en la que estés) y [DEV-PROFILE.md](../../config/DEV-PROFILE.md).
    - Un campo vacío (`—`) no es un aviso: no lo menciones. Usa el valor por defecto; si lo necesitas para el trabajo, pregúntalo una vez, propón un valor y anótalo en el archivo (§5).
-   - [COMANDOS.md](../../COMANDOS.md) **no** se lee aquí: solo cuando vayas a escribir o probar código o a commitear.
-2. [INDEX.md](../../INDEX.md): «Activo ahora» y la fila de la task.
+   - [COMANDOS.md](../../config/COMANDOS.md) **no** se lee aquí: solo cuando vayas a escribir o probar código o a commitear.
+2. [INDEX.md](../../work/INDEX.md): «Activo ahora» y la fila de la task.
 3. `README.md` y `decisions.md` de la task.
 4. El brief de la subtask y lo que cite (decisiones globales, restricciones, ADR).
-5. El report de la subtask anterior («Siguiente paso», «Impacto en docs») y, si la subtask está `en curso`, su propio report parcial si existe.
+5. El report de la subtask anterior, si la hay («Siguiente paso», «Impacto en docs») y, si la subtask está `en curso`, su propio report parcial si existe.
 6. Las páginas de `docs/` de las áreas que vas a tocar (índice: `docs/README.md`).
 7. El playbook del trabajo que vas a hacer (tabla de `AGENTS.md`).
 

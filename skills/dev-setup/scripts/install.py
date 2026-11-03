@@ -21,11 +21,11 @@ Uso:
 La versión del paquete sale de release/VERSION (raíz del paquete) o de assets/VERSION (bundle de la skill).
 
 Si dev/ ya existe no se sobrescribe nada sin confirmar. En una actualización solo se reemplazan
-los archivos del paquete (AGENTS.md, method/, .tools/); PROJECT.md, COMANDOS.md, DEV-PROFILE.md,
-INDEX.md, RETRO.md, docs/ (incluye docs/decisions/) y work/ (tasks, bugs, reports, changelogs) solo se crean
-si faltan. Si dev/ tiene la estructura anterior a 0.6.0 (guidelines/, templates/ o tasks/ en su raíz y
-sin method/), no se toca nada: avisa «estructura anterior: ejecuta la migración (dev-update)»
-(`migrate.py`) y termina; `--dry-run` también lo informa. Antes de reemplazar, los archivos del paquete que editaste a mano (su hash no coincide
+los archivos del paquete (AGENTS.md, method/, .tools/); config/ (PROJECT.md, COMANDOS.md, DEV-PROFILE.md),
+docs/ (incluye docs/decisions/) y work/ (INDEX.md, RETRO.md, tasks, bugs, reports, changelogs) solo se crean
+si faltan. Si dev/ tiene una estructura anterior (0.5.0: guidelines/, templates/ o tasks/ en su raíz y sin
+method/; 0.7.x: PROJECT.md, INDEX.md… en la raíz de dev/), no se toca nada: avisa «estructura anterior:
+ejecuta la migración (dev-update)» (`migrate.py`) y termina; `--dry-run` también lo informa. Antes de reemplazar, los archivos del paquete que editaste a mano (su hash no coincide
 con dev/.package-manifest) se copian a dev/.backup/<fecha>-v<versión previa>/. Al terminar escribe
 dev/.package-manifest (sha256 de cada archivo del paquete) y ejecuta check.py sobre el resultado.
 
@@ -51,13 +51,19 @@ MANAGED = ("AGENTS.md", "method")
 MANIFEST = ".package-manifest"
 BACKUP_DIR = ".backup"
 FEEDBACK_DIR = ".feedback"
-USER_OWNED = ("PROJECT.md", "DEV-PROFILE.md", "COMANDOS.md", "INDEX.md", "RETRO.md", "docs", "work")
+USER_OWNED = ("config", "docs", "work")
+# Archivos del proyecto que hasta 0.7.x vivían en la raíz de dev/ (0.8.0 los pasa a config/ y work/).
+ROOT_FILES_070 = ("PROJECT.md", "COMANDOS.md", "DEV-PROFILE.md", "INDEX.md", "RETRO.md")
 OLD_STRUCTURE_MSG = "estructura anterior: ejecuta la migración (dev-update, migrate.py)"
 
 
 def old_structure(dest: Path) -> bool:
-    """dev/ de 0.5.0: guidelines/, templates/ o tasks/ en la raíz y sin method/."""
-    return dest.is_dir() and not (dest / "method").exists() and any((dest / d).exists() for d in ("guidelines", "templates", "tasks"))
+    """dev/ de 0.5.0 (guidelines/, templates/ o tasks/ en la raíz y sin method/) o de 0.7.x (archivos del
+    proyecto en la raíz): instalar encima duplicaría los datos del proyecto."""
+    if not dest.is_dir():
+        return False
+    pre_060 = not (dest / "method").exists() and any((dest / d).exists() for d in ("guidelines", "templates", "tasks"))
+    return pre_060 or any((dest / f).is_file() for f in ROOT_FILES_070)
 
 
 def stray_old_dirs(dest: Path) -> list[str]:
@@ -442,7 +448,7 @@ def main(argv: list[str]) -> int:
 
     if mode == "A":
         if (target / ".git").is_dir():
-            add_excludes(target / ".git", ["dev/", "dev/DEV-PROFILE.md", f"dev/{BACKUP_DIR}/", f"dev/{FEEDBACK_DIR}/"]
+            add_excludes(target / ".git", ["dev/", "dev/config/DEV-PROFILE.md", f"dev/{BACKUP_DIR}/", f"dev/{FEEDBACK_DIR}/"]
                          + [f"/{s}" for s in created_stubs] + adapter_excludes(adapters))
     else:
         gi = dest / ".gitignore"
@@ -468,10 +474,10 @@ def main(argv: list[str]) -> int:
         print(f"\nRespaldados {len(backed_up)} archivos del paquete que habías editado, en {backup_dir}:")
         for rel in backed_up:
             print(f"  {rel}")
-        print("El paquete los ha reemplazado. Si querías conservar esos cambios, llévalos a PROJECT.md o al paquete.")
+        print("El paquete los ha reemplazado. Si querías conservar esos cambios, llévalos a config/PROJECT.md o al paquete.")
     print()
     check = subprocess.run([sys.executable, "-I", str(dest / ".tools" / "check.py"), str(dest)])
-    print("\nSiguiente: revisa dev/PROJECT.md (alias, idiomas, restricciones) y rellena dev/COMANDOS.md con lo que encuentres. DEV-PROFILE.md es opcional; «—» significa «sin definir» y no es un aviso.")
+    print("\nSiguiente: revisa dev/config/PROJECT.md (alias, idiomas, restricciones) y rellena dev/config/COMANDOS.md con lo que encuentres. config/DEV-PROFILE.md es opcional; «—» significa «sin definir» y no es un aviso.")
     return 1 if check.returncode == 1 else 0
 
 

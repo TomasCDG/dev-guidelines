@@ -6,11 +6,11 @@ Una carpeta `dev/` ya usada, de un proyecto ficticio («Pendientes»: API en Pyt
 
 | Qué mirar | Dónde | Qué ilustra |
 |---|---|---|
-| Configuración rellenada | [PROJECT.md](./mini-proyecto/PROJECT.md), [COMANDOS.md](./mini-proyecto/COMANDOS.md), [DEV-PROFILE.md.example](./mini-proyecto/DEV-PROFILE.md.example) | Núcleo (alias, idiomas, restricciones `C1…`, zonas intocables), comandos bajo demanda y perfil personal de 5 filas (en un proyecto real el perfil no se versiona). |
-| Estado vivo | [INDEX.md](./mini-proyecto/INDEX.md) | Una task en curso: es lo que lee el agente con «continúa task-1». |
-| Task completa | [work/tasks/task-1-listado-tareas/](./mini-proyecto/work/tasks/task-1-listado-tareas/README.md) | README con estado por subtask, decisiones con IDs `T1-…`, una subtask hecha, una en curso y una pendiente. |
-| Cierre de una subtask | [report](./mini-proyecto/work/reports/task-1-listado-tareas/subtask-1-api-crud.md) y [changelog](./mini-proyecto/work/changelogs/task-1-listado-tareas/subtask-1-api-crud.md) | El changelog reproduce la tabla «Qué cambió» del report. |
-| Retro del proyecto | [RETRO.md](./mini-proyecto/RETRO.md) | Una fila `pendiente` de muestra (ficticia): lo que `dev-feedback` procesaría. |
+| Configuración rellenada | [PROJECT.md](./mini-proyecto/config/PROJECT.md), [ENTORNO.md](./mini-proyecto/config/ENTORNO.md), [COMANDOS.md](./mini-proyecto/config/COMANDOS.md), [DEV-PROFILE.md.example](./mini-proyecto/config/DEV-PROFILE.md.example) | Núcleo (alias, idiomas, restricciones `C1…`, zonas intocables), herramientas por etapa (API y front locales, regla `E1`), comandos bajo demanda y perfil personal de 5 filas (en un proyecto real el perfil no se versiona). |
+| Estado vivo | [INDEX.md](./mini-proyecto/work/INDEX.md) | Una task en curso: es lo que lee el agente con «continúa task-1». |
+| Task completa | [work/tasks/task-1-listado-tareas/](./mini-proyecto/work/tasks/task-1-listado-tareas/README.md) | README con estado por subtask, decisiones con IDs `T1-…`, dos subtasks (la API hecha y la UI en curso, separadas por el corte D2) con la columna «Corte». |
+| Cierre de una subtask | [report](./mini-proyecto/work/reports/task-1-listado-tareas/subtask-1-api.md) y [changelog](./mini-proyecto/work/changelogs/task-1-listado-tareas/subtask-1-api.md) | El changelog reproduce la tabla «Qué cambió» del report. |
+| Retro del proyecto | [RETRO.md](./mini-proyecto/work/RETRO.md) | Una fila `pendiente` de muestra (ficticia): lo que `dev-feedback` procesaría. |
 | Decisión global | [docs/decisions/ADR-001](./mini-proyecto/docs/decisions/ADR-001-solo-localhost.md) | Promoción de T1-D1 a ADR. |
 | Docs técnicos | [docs/README.md](./mini-proyecto/docs/README.md) | Índice con «léela cuando…», cabecera de frescura en cada página. |
 
